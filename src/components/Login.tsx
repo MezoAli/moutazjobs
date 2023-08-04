@@ -10,24 +10,73 @@ import {
   Input,
   Stack,
   Image,
+  FormErrorMessage,
 } from "@chakra-ui/react";
 import Link from "next/link";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+type LoginFormTypes = {
+  email: string;
+  password: number;
+};
+
+const loginFormScehma = z.object({
+  email: z.string().email("Please enter a valid email address"),
+  password: z.string().min(6, "password should be at least 6 characters"),
+});
 
 export default function LoginForm() {
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = useForm<LoginFormTypes>({
+    resolver: zodResolver(loginFormScehma),
+  });
+  console.log(errors);
+
+  const onSubmit = (data: LoginFormTypes) => {
+    console.log(data);
+  };
   return (
     <Stack minH={"100vh"} direction={{ base: "column", md: "row" }}>
       <Flex p={8} flex={1} align={"center"} justify={"center"}>
-        <Stack as="form" spacing={4} w={"full"} maxW={"md"} mb="20px">
+        <Stack
+          as="form"
+          spacing={4}
+          w={"full"}
+          maxW={"md"}
+          mb="20px"
+          onSubmit={handleSubmit(onSubmit)}
+        >
           <Heading textAlign="center" mb="20px" fontSize={"2xl"}>
             Login in to your account
           </Heading>
-          <FormControl id="email">
+          <FormControl id="email" isRequired>
             <FormLabel>Email address</FormLabel>
-            <Input required type="email" placeholder="example@example.com" />
+            <Input
+              required
+              type="email"
+              placeholder="example@example.com"
+              {...register("email")}
+            />
+            <Text color="red.400" fontSize="sm" my="5px">
+              {errors.email && errors.email?.message}
+            </Text>
           </FormControl>
-          <FormControl id="password">
+
+          <FormControl id="password" isRequired>
             <FormLabel>Password</FormLabel>
-            <Input required type="password" placeholder="***************" />
+            <Input
+              type="password"
+              placeholder="***************"
+              {...register("password")}
+            />
+            <Text color="red.400" fontSize="sm" my="5px">
+              {errors.password && errors.password?.message}
+            </Text>
           </FormControl>
           <Button type="submit" w="100%" bg="teal.200" my="10px">
             Log In
