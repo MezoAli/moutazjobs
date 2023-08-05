@@ -13,11 +13,13 @@ import {
   HStack,
   Radio,
   RadioGroup,
+  useToast,
 } from "@chakra-ui/react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
 
 type RegisterFormTypes = {
   name: string;
@@ -44,20 +46,32 @@ export default function RegisterForm() {
   } = useForm<RegisterFormTypes>({
     resolver: zodResolver(registerFormScehma),
   });
-
+  const toast = useToast();
   const onSubmit = async (data: RegisterFormTypes) => {
     try {
-      const res = await fetch("/api/users/register", {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: {
-          "Content-Type": "application/json",
-        },
+      // const res = await fetch("/api/users/register", {
+      //   method: "POST",
+      //   body: JSON.stringify(data),
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      // });
+      const res = await axios.post("/api/users/register", data);
+      toast({
+        title: res.data.message,
+        position: "top",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
       });
-      const info = await res.json();
-      console.log(info);
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      toast({
+        title: error.response.data.message || "something went wrong",
+        position: "top",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
     }
   };
   return (
