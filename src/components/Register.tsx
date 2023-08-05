@@ -39,15 +39,26 @@ const registerFormScehma = z.object({
 export default function RegisterForm() {
   const {
     register,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     handleSubmit,
   } = useForm<RegisterFormTypes>({
     resolver: zodResolver(registerFormScehma),
   });
-  console.log(errors);
 
-  const onSubmit = (data: RegisterFormTypes) => {
-    console.log(data);
+  const onSubmit = async (data: RegisterFormTypes) => {
+    try {
+      const res = await fetch("/api/users/register", {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const info = await res.json();
+      console.log(info);
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <Stack minH={"100vh"} direction={{ base: "column", md: "row" }}>
@@ -86,7 +97,11 @@ export default function RegisterForm() {
               {errors.name && errors.name?.message}
             </Text>
           </FormControl>
-          <FormControl id="email" isRequired>
+          <FormControl
+            id="email"
+            isRequired
+            isInvalid={!!errors.email?.message}
+          >
             <FormLabel>Email address</FormLabel>
             <Input
               type="email"
@@ -97,7 +112,11 @@ export default function RegisterForm() {
               {errors.email && errors.email?.message}
             </Text>
           </FormControl>
-          <FormControl id="password" isRequired>
+          <FormControl
+            id="password"
+            isRequired
+            isInvalid={!!errors.password?.message}
+          >
             <FormLabel>Password</FormLabel>
             <Input
               type="password"
@@ -108,7 +127,13 @@ export default function RegisterForm() {
               {errors.password && errors.password?.message}
             </Text>
           </FormControl>
-          <Button type="submit" w="100%" bg="teal.200" my="10px">
+          <Button
+            type="submit"
+            w="100%"
+            bg="teal.200"
+            my="10px"
+            isLoading={isSubmitting}
+          >
             Sign Up
           </Button>
           <Flex justifyContent="center" alignItems="center" gap="10px">

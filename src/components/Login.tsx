@@ -37,7 +37,7 @@ const loginFormScehma = z.object({
 export default function LoginForm() {
   const {
     register,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     handleSubmit,
   } = useForm<LoginFormTypes>({
     resolver: zodResolver(loginFormScehma),
@@ -109,7 +109,13 @@ export default function LoginForm() {
               {errors.password && errors.password?.message}
             </Text>
           </FormControl>
-          <Button type="submit" w="100%" bg="teal.200" my="10px">
+          <Button
+            type="submit"
+            w="100%"
+            bg="teal.200"
+            my="10px"
+            isLoading={isSubmitting}
+          >
             Log In
           </Button>
           <Flex justifyContent="center" alignItems="center" gap="10px">
