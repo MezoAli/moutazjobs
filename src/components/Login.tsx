@@ -10,7 +10,10 @@ import {
   Input,
   Stack,
   Image,
-  FormErrorMessage,
+  HStack,
+  Radio,
+  RadioGroup,
+  FormHelperText,
 } from "@chakra-ui/react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
@@ -19,12 +22,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 type LoginFormTypes = {
   email: string;
-  password: number;
+  password: string;
+  employmentType: string;
 };
 
 const loginFormScehma = z.object({
   email: z.string().email("Please enter a valid email address"),
   password: z.string().min(6, "password should be at least 6 characters"),
+  employmentType: z.string(),
 });
 
 export default function LoginForm() {
@@ -54,7 +59,27 @@ export default function LoginForm() {
           <Heading textAlign="center" mb="20px" fontSize={"2xl"}>
             Login in to your account
           </Heading>
-          <FormControl id="email" isRequired>
+          <FormControl as="fieldset" isRequired>
+            <FormLabel as="legend">Log In As </FormLabel>
+            <RadioGroup defaultValue="Employee">
+              <HStack spacing="24px">
+                <Radio {...register("employmentType")} value="Employee">
+                  Employee
+                </Radio>
+                <Radio {...register("employmentType")} value="Employer">
+                  Employer
+                </Radio>
+              </HStack>
+            </RadioGroup>
+            <Text color="red.400" fontSize="sm" my="5px">
+              {errors.employmentType && errors.employmentType?.message}
+            </Text>
+          </FormControl>
+          <FormControl
+            id="email"
+            isRequired
+            isInvalid={!!errors.email?.message}
+          >
             <FormLabel>Email address</FormLabel>
             <Input
               required
@@ -67,7 +92,11 @@ export default function LoginForm() {
             </Text>
           </FormControl>
 
-          <FormControl id="password" isRequired>
+          <FormControl
+            id="password"
+            isRequired
+            isInvalid={!!errors.password?.message}
+          >
             <FormLabel>Password</FormLabel>
             <Input
               type="password"

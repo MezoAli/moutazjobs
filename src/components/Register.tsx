@@ -21,17 +21,16 @@ export default function RegisterForm() {
           <Heading textAlign="center" mb="20px" fontSize={"2xl"}>
             Create An Account
           </Heading>
-          <FormControl id="name">
+          <FormControl id="name" isRequired>
             <FormLabel>Name</FormLabel>
-            <Input required type="text" placeholder="Moutaz Ali" />
           </FormControl>
-          <FormControl id="email">
+          <FormControl id="email" isRequired>
             <FormLabel>Email address</FormLabel>
-            <Input required type="email" placeholder="example@example.com" />
+            <Input type="email" placeholder="example@example.com" />
           </FormControl>
-          <FormControl id="password">
+          <FormControl id="password" isRequired>
             <FormLabel>Password</FormLabel>
-            <Input required type="password" placeholder="***************" />
+            <Input type="password" placeholder="***************" />
           </FormControl>
           <Button type="submit" w="100%" bg="teal.200" my="10px">
             Sign Up
