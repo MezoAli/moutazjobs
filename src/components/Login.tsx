@@ -13,7 +13,6 @@ import {
   HStack,
   Radio,
   RadioGroup,
-  FormHelperText,
 } from "@chakra-ui/react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
@@ -28,7 +27,10 @@ type LoginFormTypes = {
 
 const loginFormScehma = z.object({
   email: z.string().email("Please enter a valid email address"),
-  password: z.string().min(6, "password should be at least 6 characters"),
+  password: z
+    .string()
+    .trim()
+    .min(6, "password should be at least 6 characters"),
   employmentType: z.string(),
 });
 
