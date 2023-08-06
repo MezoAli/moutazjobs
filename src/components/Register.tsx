@@ -13,13 +13,17 @@ import {
   HStack,
   Radio,
   RadioGroup,
+  InputGroup,
+  InputRightElement,
   useToast,
 } from "@chakra-ui/react";
 import Link from "next/link";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 type RegisterFormTypes = {
   name: string;
@@ -47,29 +51,26 @@ export default function RegisterForm() {
     resolver: zodResolver(registerFormScehma),
   });
   const toast = useToast();
+  const router = useRouter();
+  const [show, setShow] = useState(false);
+  const handleClick = () => setShow(!show);
   const onSubmit = async (data: RegisterFormTypes) => {
     try {
-      // const res = await fetch("/api/users/register", {
-      //   method: "POST",
-      //   body: JSON.stringify(data),
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      // });
       const res = await axios.post("/api/users/register", data);
       toast({
         title: res.data.message,
         position: "top",
         status: "success",
-        duration: 5000,
+        duration: 3000,
         isClosable: true,
       });
+      router.push("/auth/login");
     } catch (error: any) {
       toast({
         title: error.response.data.message || "something went wrong",
         position: "top",
         status: "error",
-        duration: 5000,
+        duration: 3000,
         isClosable: true,
       });
     }
@@ -132,11 +133,20 @@ export default function RegisterForm() {
             isInvalid={!!errors.password?.message}
           >
             <FormLabel>Password</FormLabel>
-            <Input
-              type="password"
-              placeholder="***************"
-              {...register("password")}
-            />
+            <InputGroup>
+              <Input
+                pr="4.5rem"
+                type={show ? "text" : "password"}
+                placeholder="***************"
+                {...register("password")}
+              />
+              <InputRightElement width="4.5rem">
+                <Button h="1.75rem" size="sm" onClick={handleClick}>
+                  {show ? "Hide" : "Show"}
+                </Button>
+              </InputRightElement>
+            </InputGroup>
+
             <Text color="red.400" fontSize="sm" my="5px">
               {errors.password && errors.password?.message}
             </Text>

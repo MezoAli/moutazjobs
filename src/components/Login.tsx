@@ -10,19 +10,20 @@ import {
   Input,
   Stack,
   Image,
-  HStack,
-  Radio,
-  RadioGroup,
+  useToast,
+  InputGroup,
+  InputRightElement,
 } from "@chakra-ui/react";
+import { useState } from "react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-
+import axios from "axios";
+import { useRouter } from "next/navigation";
 type LoginFormTypes = {
   email: string;
   password: string;
-  employmentType: string;
 };
 
 const loginFormScehma = z.object({
@@ -31,7 +32,6 @@ const loginFormScehma = z.object({
     .string()
     .trim()
     .min(6, "password should be at least 6 characters"),
-  employmentType: z.string(),
 });
 
 export default function LoginForm() {
@@ -42,10 +42,30 @@ export default function LoginForm() {
   } = useForm<LoginFormTypes>({
     resolver: zodResolver(loginFormScehma),
   });
-  console.log(errors);
-
-  const onSubmit = (data: LoginFormTypes) => {
-    console.log(data);
+  const toast = useToast();
+  const router = useRouter();
+  const [show, setShow] = useState(false);
+  const handleClick = () => setShow(!show);
+  const onSubmit = async (data: LoginFormTypes) => {
+    try {
+      const res = await axios.post("/api/users/login", data);
+      toast({
+        title: res.data.message,
+        position: "top",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+      router.push("/");
+    } catch (error: any) {
+      toast({
+        title: error.response.data.message || "something went wrong",
+        position: "top",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
   };
   return (
     <Stack minH={"100vh"} direction={{ base: "column", md: "row" }}>
@@ -61,22 +81,7 @@ export default function LoginForm() {
           <Heading textAlign="center" mb="20px" fontSize={"2xl"}>
             Login in to your account
           </Heading>
-          <FormControl as="fieldset" isRequired>
-            <FormLabel as="legend">Log In As </FormLabel>
-            <RadioGroup defaultValue="Employee">
-              <HStack spacing="24px">
-                <Radio {...register("employmentType")} value="Employee">
-                  Employee
-                </Radio>
-                <Radio {...register("employmentType")} value="Employer">
-                  Employer
-                </Radio>
-              </HStack>
-            </RadioGroup>
-            <Text color="red.400" fontSize="sm" my="5px">
-              {errors.employmentType && errors.employmentType?.message}
-            </Text>
-          </FormControl>
+
           <FormControl
             id="email"
             isRequired
@@ -93,22 +98,30 @@ export default function LoginForm() {
               {errors.email && errors.email?.message}
             </Text>
           </FormControl>
-
           <FormControl
             id="password"
             isRequired
             isInvalid={!!errors.password?.message}
           >
             <FormLabel>Password</FormLabel>
-            <Input
-              type="password"
-              placeholder="***************"
-              {...register("password")}
-            />
+            <InputGroup>
+              <Input
+                pr="4.5rem"
+                type={show ? "text" : "password"}
+                placeholder="***************"
+                {...register("password")}
+              />
+              <InputRightElement width="4.5rem">
+                <Button h="1.75rem" size="sm" onClick={handleClick}>
+                  {show ? "Hide" : "Show"}
+                </Button>
+              </InputRightElement>
+            </InputGroup>
             <Text color="red.400" fontSize="sm" my="5px">
               {errors.password && errors.password?.message}
             </Text>
           </FormControl>
+
           <Button
             type="submit"
             w="100%"
