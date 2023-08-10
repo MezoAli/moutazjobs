@@ -143,8 +143,12 @@ const Sidebar = ({ isExpanded, setIsExpanded }: SidebarProps) => {
             alignItems="center"
             justifyContent="center"
           >
-            <Text fontWeight="semibold">{user?.name}</Text>
-            <Text fontWeight="semibold">{user.email}</Text>
+            <Text fontSize="sm" fontWeight="semibold">
+              {user?.name}
+            </Text>
+            <Text fontSize="sm" fontWeight="semibold">
+              {user.email}
+            </Text>
           </Flex>
         )}
       </Flex>

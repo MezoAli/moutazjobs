@@ -1,6 +1,6 @@
 "use client";
-import axios from "axios";
-import { useState, useEffect } from "react";
+// import axios from "axios";
+// import { useState, useEffect } from "react";
 import { Avatar } from "@chakra-ui/react";
 import { Text } from "@chakra-ui/react";
 import { Box } from "@chakra-ui/react";
