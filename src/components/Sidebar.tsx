@@ -10,16 +10,19 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { useAppDispatch, useAppSelector } from "@/redux/store/hooks";
+import { getCurrentUser } from "@/redux/slices/userSlice";
 interface SidebarProps {
   isExpanded: Boolean;
   setIsExpanded: Dispatch<SetStateAction<boolean>>;
 }
 const Sidebar = ({ isExpanded, setIsExpanded }: SidebarProps) => {
   const pathname = usePathname();
-  const [user, setUser] = useState<any>({});
+  const dispatch = useAppDispatch();
+  const user = useAppSelector((state) => state.user.user);
   const getUser = async () => {
     const response = await axios.get("/api/users/currentUser");
-    setUser(response.data.data);
+    dispatch(getCurrentUser(response.data.data));
   };
 
   useEffect(() => {
@@ -97,6 +100,7 @@ const Sidebar = ({ isExpanded, setIsExpanded }: SidebarProps) => {
           const isActive = pathname === menu.path;
           return (
             <Flex
+              key={menu.title}
               as={Link}
               href={menu.path}
               justifyContent="space-between"

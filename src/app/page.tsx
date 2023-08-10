@@ -5,7 +5,7 @@ import { cookies } from "next/headers";
 const getUser = async () => {
   const cookie = cookies();
   const token = cookie.get("token")?.value;
-  const res = await axios.get("http://localhost:3000/api/users/currentUser", {
+  const res = await axios.get(`${process.env.SITE_URL}/api/users/currentUser`, {
     headers: {
       Cookie: `token=${token}`,
     },
