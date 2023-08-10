@@ -1,6 +1,9 @@
 import { verifyJWT } from "@/lib/verifyJWT";
 import User from "@/modals/userModal";
 import { NextRequest, NextResponse } from "next/server";
+import { connectDB } from "@/config/mongodbConfig";
+
+connectDB();
 
 export async function GET(req: NextRequest) {
   try {
