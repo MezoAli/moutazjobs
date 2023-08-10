@@ -1,6 +1,7 @@
 "use client";
 import { extendTheme } from "@chakra-ui/react";
 import { Grid, GridItem } from "@chakra-ui/react";
+import { useState } from "react";
 const theme = extendTheme({
   // colors: {
   //   brand: {
@@ -21,24 +22,31 @@ import Sidebar from "@/components/Sidebar";
 
 export function Providers({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const [isExpanded, setIsExpanded] = useState(true);
   const isPublicPath =
     pathname === "/auth/login" || pathname === "/auth/register";
   return (
     <CacheProvider>
       <ChakraProvider theme={theme}>
-        <Grid templateColumns="repeat(6, 1fr)" gap={2}>
+        <Grid templateColumns="repeat(12, 1fr)" gap={2}>
           {!isPublicPath && (
             <GridItem
-              colSpan={{ base: 6, lg: 1 }}
+              colSpan={{ base: 12, lg: isExpanded ? 2 : 1 }}
               bg="black"
               color="white"
               height={{ base: "auto", lg: "100vh" }}
+              display="flex"
+              flexDir="column"
+              justifyContent="space-between"
+              alignItems="center"
             >
-              <Sidebar />
+              <Sidebar isExpanded={isExpanded} setIsExpanded={setIsExpanded} />
             </GridItem>
           )}
 
-          <GridItem colSpan={{ base: 6, lg: isPublicPath ? 6 : 5 }}>
+          <GridItem
+            colSpan={{ base: 12, lg: isPublicPath ? 12 : isExpanded ? 10 : 11 }}
+          >
             {children}
           </GridItem>
         </Grid>
