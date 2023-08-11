@@ -1,4 +1,4 @@
-import { Text, Flex, Icon, Button, Center } from "@chakra-ui/react";
+import { Text, Flex, Icon, Center, useToast } from "@chakra-ui/react";
 import { BiHome } from "react-icons/bi";
 import { CiUser, CiSettings } from "react-icons/ci";
 import { BsCardList } from "react-icons/bs";
@@ -12,6 +12,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useAppDispatch, useAppSelector } from "@/redux/store/hooks";
 import { getCurrentUser } from "@/redux/slices/userSlice";
+import { setLoading } from "@/redux/slices/loadingSlice";
 interface SidebarProps {
   isExpanded: Boolean;
   setIsExpanded: Dispatch<SetStateAction<boolean>>;
@@ -20,9 +21,23 @@ const Sidebar = ({ isExpanded, setIsExpanded }: SidebarProps) => {
   const pathname = usePathname();
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.user.user);
+  const toast = useToast();
   const getUser = async () => {
-    const response = await axios.get("/api/users/currentUser");
-    dispatch(getCurrentUser(response.data.data));
+    try {
+      dispatch(setLoading(true));
+      const response = await axios.get("/api/users/currentUser");
+      dispatch(getCurrentUser(response.data.data));
+    } catch (error: any) {
+      toast({
+        title: error.response.data.message || "something went wrong",
+        position: "top",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    } finally {
+      dispatch(setLoading(false));
+    }
   };
 
   useEffect(() => {

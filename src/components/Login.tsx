@@ -21,6 +21,8 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { useAppDispatch } from "@/redux/store/hooks";
+import { setLoading } from "@/redux/slices/loadingSlice";
 type LoginFormTypes = {
   email: string;
   password: string;
@@ -44,10 +46,12 @@ export default function LoginForm() {
   });
   const toast = useToast();
   const router = useRouter();
+  const dispatch = useAppDispatch();
   const [show, setShow] = useState(false);
   const handleClick = () => setShow(!show);
   const onSubmit = async (data: LoginFormTypes) => {
     try {
+      dispatch(setLoading(true));
       const res = await axios.post("/api/users/login", data);
       toast({
         title: res.data.message,
@@ -65,6 +69,8 @@ export default function LoginForm() {
         duration: 3000,
         isClosable: true,
       });
+    } finally {
+      dispatch(setLoading(false));
     }
   };
   return (

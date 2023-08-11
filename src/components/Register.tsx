@@ -24,6 +24,8 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { useAppDispatch } from "@/redux/store/hooks";
+import { setLoading } from "@/redux/slices/loadingSlice";
 
 type RegisterFormTypes = {
   name: string;
@@ -52,10 +54,12 @@ export default function RegisterForm() {
   });
   const toast = useToast();
   const router = useRouter();
+  const dispatch = useAppDispatch();
   const [show, setShow] = useState(false);
   const handleClick = () => setShow(!show);
   const onSubmit = async (data: RegisterFormTypes) => {
     try {
+      dispatch(setLoading(true));
       const res = await axios.post("/api/users/register", data);
       toast({
         title: res.data.message,
@@ -73,6 +77,8 @@ export default function RegisterForm() {
         duration: 3000,
         isClosable: true,
       });
+    } finally {
+      dispatch(setLoading(false));
     }
   };
   return (
