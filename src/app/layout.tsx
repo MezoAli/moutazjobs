@@ -2,6 +2,7 @@ import { Providers } from "@/providers/Providers";
 import "./globals.css";
 import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
+import ChildrenLayout from "@/components/ChildrenLayout";
 
 const montserrat = Montserrat({ subsets: ["latin"] });
 // const inter = Poppins({ weight: ["100", "200", "300"], subsets: ["latin"] });
@@ -19,7 +20,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={montserrat.className}>
-        <Providers>{children}</Providers>
+        <Providers>
+          <ChildrenLayout>{children}</ChildrenLayout>
+        </Providers>
       </body>
     </html>
   );

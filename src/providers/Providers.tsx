@@ -1,12 +1,14 @@
 "use client";
 import { extendTheme } from "@chakra-ui/react";
-import { Grid, GridItem } from "@chakra-ui/react";
 import { useState } from "react";
 import { CacheProvider } from "@chakra-ui/next-js";
 import { ChakraProvider } from "@chakra-ui/react";
+import { Grid, GridItem } from "@chakra-ui/react";
 import { usePathname } from "next/navigation";
 import Sidebar from "@/components/Sidebar";
-import ReduxProvider from "./ReduxProvider";
+import { Provider } from "react-redux";
+import { store } from "@/redux/store/store";
+import Loader from "@/components/Loader";
 
 const theme = extendTheme({
   // colors: {
@@ -22,14 +24,16 @@ const theme = extendTheme({
 });
 
 export function Providers({ children }: { children: React.ReactNode }) {
-  const pathname = usePathname();
-  const [isExpanded, setIsExpanded] = useState(true);
-  const isPublicPath =
-    pathname === "/auth/login" || pathname === "/auth/register";
+  // const pathname = usePathname();
+  // const [isExpanded, setIsExpanded] = useState(true);
+  // const isPublicPath =
+  //   pathname === "/auth/login" || pathname === "/auth/register";
   return (
     <CacheProvider>
       <ChakraProvider theme={theme}>
-        <ReduxProvider>
+        <Provider store={store}>
+          {children}
+          {/* <Loader />
           <Grid templateColumns="repeat(12, 1fr)" gap={2}>
             {!isPublicPath && (
               <GridItem
@@ -57,8 +61,8 @@ export function Providers({ children }: { children: React.ReactNode }) {
             >
               {children}
             </GridItem>
-          </Grid>
-        </ReduxProvider>
+          </Grid> */}
+        </Provider>
       </ChakraProvider>
     </CacheProvider>
   );
