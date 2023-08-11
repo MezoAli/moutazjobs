@@ -1,3 +1,4 @@
+"use client";
 import { Text, Flex, Icon, Center, useToast } from "@chakra-ui/react";
 import { BiHome } from "react-icons/bi";
 import { CiUser, CiSettings } from "react-icons/ci";
@@ -8,7 +9,7 @@ import { RxHamburgerMenu } from "react-icons/rx";
 import { Dispatch, SetStateAction } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import axios from "axios";
 import { useAppDispatch, useAppSelector } from "@/redux/store/hooks";
 import { getCurrentUser } from "@/redux/slices/userSlice";
