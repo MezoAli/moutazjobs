@@ -8,11 +8,11 @@ import { AiOutlineSave, AiOutlineClose } from "react-icons/ai";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { Dispatch, SetStateAction } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import axios from "axios";
 import { useAppDispatch, useAppSelector } from "@/redux/store/hooks";
-import { getCurrentUser } from "@/redux/slices/userSlice";
+import { setCurrentUser } from "@/redux/slices/userSlice";
 import { setLoading } from "@/redux/slices/loadingSlice";
 interface SidebarProps {
   isExpanded: Boolean;
@@ -22,12 +22,13 @@ const Sidebar = ({ isExpanded, setIsExpanded }: SidebarProps) => {
   const pathname = usePathname();
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.user.user);
+  const router = useRouter();
   const toast = useToast();
   const getUser = async () => {
     try {
       dispatch(setLoading(true));
       const response = await axios.get("/api/users/currentUser");
-      dispatch(getCurrentUser(response.data.data));
+      dispatch(setCurrentUser(response.data.data));
     } catch (error: any) {
       toast({
         title: error.response.data.message || "something went wrong",
@@ -44,6 +45,32 @@ const Sidebar = ({ isExpanded, setIsExpanded }: SidebarProps) => {
   useEffect(() => {
     getUser();
   }, []);
+
+  const handleLogout = async () => {
+    try {
+      dispatch(setLoading(true));
+      const response = await axios.post("/api/users/logout");
+      dispatch(setCurrentUser(null));
+      toast({
+        title: response.data.message,
+        position: "top",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+      router.push("/auth/login");
+    } catch (error: any) {
+      toast({
+        title: error.response.data.message || "something went wrong",
+        position: "top",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
 
   const menus = [
     {
@@ -150,6 +177,7 @@ const Sidebar = ({ isExpanded, setIsExpanded }: SidebarProps) => {
         padding="5px"
         borderRadius="5px"
         title="Log Out"
+        onClick={handleLogout}
       >
         <Icon as={FiLogOut} boxSize={5} cursor="pointer" />
         {isExpanded && (
@@ -163,7 +191,7 @@ const Sidebar = ({ isExpanded, setIsExpanded }: SidebarProps) => {
               {user?.name}
             </Text>
             <Text fontSize="sm" fontWeight="semibold">
-              {user.email}
+              {user?.email}
             </Text>
           </Flex>
         )}
