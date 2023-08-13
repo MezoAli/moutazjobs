@@ -11,6 +11,7 @@ import {
   Divider,
 } from "@chakra-ui/react";
 import AddSkillsForm from "./AddSkillsForm";
+import AddEducationForm from "./AddEducationForm";
 const EmployeeForm = () => {
   const user = useAppSelector((state) => state.user.user);
   return (
@@ -55,6 +56,7 @@ const EmployeeForm = () => {
         {/* Skill section */}
         <AddSkillsForm />
         {/* Education section */}
+        <AddEducationForm />
       </Flex>
     </Container>
   );
