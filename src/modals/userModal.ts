@@ -25,6 +25,42 @@ const userSchema = new mongoose.Schema(
       require: true,
       default: false,
     },
+    skills: {
+      type: [],
+      require: false,
+    },
+    education: {
+      type: [],
+      require: false,
+    },
+    experience: {
+      type: [],
+      require: false,
+    },
+    carrierObjective: {
+      type: String,
+      require: false,
+    },
+    establishmentYear: {
+      type: String,
+      require: false,
+    },
+    about: {
+      type: String,
+      require: false,
+    },
+    companySize: {
+      type: String,
+      require: false,
+    },
+    website: {
+      type: String,
+      require: false,
+    },
+    address: {
+      type: String,
+      require: false,
+    },
   },
   {
     timestamps: true,

@@ -64,16 +64,6 @@ const EmployeeForm = () => {
         {/* Experince sextion */}
         <AddExperienceForm />
         <Divider />
-        <Button
-          my="20px"
-          width="100%"
-          bg="black"
-          color="white"
-          variant="solid"
-          _hover={{ bg: "white", color: "black", border: "1px solid black" }}
-        >
-          Update Profile
-        </Button>
       </Flex>
     </Container>
   );
