@@ -27,10 +27,10 @@ import { v4 as uuidv4 } from "uuid";
 // import { useForm } from "react-hook-form";
 // import { zodResolver } from "@hookform/resolvers/zod";
 
-interface Education {
-  qualification: string;
-  institution: string;
-  percentage: string;
+interface Experience {
+  company: string;
+  role: string;
+  yearsOfExperince: string;
   id: string;
 }
 
@@ -42,11 +42,11 @@ interface Education {
 //   rating: z.string().trim().min(1, "Rating can't be empty"),
 // });
 
-const AddEducationForm = () => {
-  const [educations, seteducations] = useState<Education[]>([]);
-  const [qualification, setQualification] = useState("");
-  const [institution, setInstitution] = useState("");
-  const [percentage, setPercentage] = useState("");
+const AddExperienceForm = () => {
+  const [experince, setExperince] = useState<Experience[]>([]);
+  const [company, setCompany] = useState("");
+  const [role, setRole] = useState("");
+  const [yearsOfExperince, setYearsOfExperince] = useState("");
   const toast = useToast();
   //   const {
   //     register,
@@ -55,16 +55,16 @@ const AddEducationForm = () => {
   //   } = useForm<Skill>({
   //     resolver: zodResolver(skillSchema),
   //   });
-  const handleAddEducation:
+  const handleAddExperince:
     | MouseEventHandler<HTMLButtonElement>
     | undefined = () => {
     if (
-      !qualification ||
-      !institution ||
-      !percentage ||
-      percentage.trim() === "" ||
-      qualification.trim() === "" ||
-      institution.trim() === ""
+      !company ||
+      !role ||
+      !yearsOfExperince ||
+      company.trim() === "" ||
+      role.trim() === "" ||
+      yearsOfExperince.trim() === ""
     ) {
       toast({
         title: "Please enter valid inputs",
@@ -75,20 +75,17 @@ const AddEducationForm = () => {
       });
       return;
     }
-    seteducations((educations) => {
-      return [
-        ...educations,
-        { qualification, institution, percentage, id: uuidv4() },
-      ];
+    setExperince((experince) => {
+      return [...experince, { company, role, yearsOfExperince, id: uuidv4() }];
     });
-    setQualification("");
-    setInstitution("");
-    setPercentage("");
+    setCompany("");
+    setRole("");
+    setYearsOfExperince("");
   };
 
-  const handleDeleteEducation = (id: string) => {
-    seteducations((educations) => {
-      return educations.filter((item) => item.id !== id);
+  const handleDeleteExperince = (id: string) => {
+    setExperince((experince) => {
+      return experince.filter((item) => item.id !== id);
     });
   };
 
@@ -96,39 +93,39 @@ const AddEducationForm = () => {
     <>
       <Box textAlign="start" width="100%">
         <Heading as="h3" size="lg" mb="20px" mt="20px" textAlign="start">
-          Education
+          Experience
         </Heading>
       </Box>
 
       <Flex gap="10px" flexDir="column" w="100%">
         <Flex alignItems="center" justifyContent="space-between" gap="10px">
           <FormControl isRequired>
-            <FormLabel>Qualification</FormLabel>
+            <FormLabel>Company</FormLabel>
             <Input
               type="text"
-              value={qualification}
-              placeholder="Ex: Pharmacy"
-              onChange={(e) => setQualification(e.target.value)}
+              value={company}
+              placeholder="Ex: Mylan Pharma."
+              onChange={(e) => setCompany(e.target.value)}
             />
           </FormControl>
           <FormControl isRequired>
-            <FormLabel>Institution</FormLabel>
+            <FormLabel>Role</FormLabel>
             <Input
               type="text"
-              value={institution}
-              placeholder="Ex: Harvard University"
-              onChange={(e) => setInstitution(e.target.value)}
+              value={role}
+              placeholder="Ex: Key Account Manager"
+              onChange={(e) => setRole(e.target.value)}
             />
           </FormControl>
           <FormControl isRequired>
-            <FormLabel>Percentage</FormLabel>
+            <FormLabel>Years Of Experience</FormLabel>
             <InputGroup>
-              <InputLeftAddon children="%" />
+              <InputLeftAddon children="Year" />
               <Input
                 type="text"
-                placeholder="Out of 100%"
-                value={percentage}
-                onChange={(e) => setPercentage(e.target.value)}
+                placeholder="Ex: 1"
+                value={yearsOfExperince}
+                onChange={(e) => setYearsOfExperince(e.target.value)}
               />
             </InputGroup>
           </FormControl>
@@ -138,39 +135,40 @@ const AddEducationForm = () => {
             bg="black"
             color="white"
             variant="solid"
+            width=""
             my="10px"
             _hover={{ bg: "white", color: "black", border: "1px solid black" }}
-            onClick={handleAddEducation}
+            onClick={handleAddExperince}
           >
             Add Education
           </Button>
         </Box>
       </Flex>
-      {educations.length > 0 && (
+      {experince.length > 0 && (
         <TableContainer width="100%">
           <Table variant="striped" colorScheme="blackAlpha">
-            <TableCaption>Educations</TableCaption>
+            <TableCaption>Experience</TableCaption>
             <Thead>
               <Tr>
-                <Th textAlign="center">Qualification</Th>
-                <Th textAlign="center">Institution</Th>
-                <Th textAlign="center">Percentage</Th>
+                <Th textAlign="center">Company</Th>
+                <Th textAlign="center">Role</Th>
+                <Th textAlign="center">Years Of Experience</Th>
                 <Th textAlign="center">Delete</Th>
               </Tr>
             </Thead>
             <Tbody>
-              {educations.map((education) => {
+              {experince.map((ex) => {
                 return (
-                  <Tr key={education.id}>
-                    <Td textAlign="center">{education.qualification}</Td>
-                    <Td textAlign="center">{education.institution}</Td>
-                    <Td textAlign="center">{education.percentage}</Td>
+                  <Tr key={ex.id}>
+                    <Td textAlign="center">{ex.company}</Td>
+                    <Td textAlign="center">{ex.role}</Td>
+                    <Td textAlign="center">{ex.yearsOfExperince}</Td>
                     <Td textAlign="center" cursor="pointer">
                       <Icon
                         as={BsTrash}
                         boxSize={5}
                         color="red.400"
-                        onClick={() => handleDeleteEducation(education.id)}
+                        onClick={() => handleDeleteExperince(ex.id)}
                       />
                     </Td>
                   </Tr>
@@ -184,4 +182,4 @@ const AddEducationForm = () => {
   );
 };
 
-export default AddEducationForm;
+export default AddExperienceForm;

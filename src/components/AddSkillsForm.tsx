@@ -121,7 +121,7 @@ const AddSkillsForm = () => {
             bg="black"
             color="white"
             variant="solid"
-            width=""
+            my="10px"
             _hover={{ bg: "white", color: "black", border: "1px solid black" }}
             onClick={handleAddSkill}
           >

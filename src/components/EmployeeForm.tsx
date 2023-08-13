@@ -9,9 +9,11 @@ import {
   Container,
   Heading,
   Divider,
+  Button,
 } from "@chakra-ui/react";
 import AddSkillsForm from "./AddSkillsForm";
 import AddEducationForm from "./AddEducationForm";
+import AddExperienceForm from "./AddExperienceForm";
 const EmployeeForm = () => {
   const user = useAppSelector((state) => state.user.user);
   return (
@@ -55,8 +57,23 @@ const EmployeeForm = () => {
         </FormControl>
         {/* Skill section */}
         <AddSkillsForm />
+        <Divider />
         {/* Education section */}
         <AddEducationForm />
+        <Divider />
+        {/* Experince sextion */}
+        <AddExperienceForm />
+        <Divider />
+        <Button
+          my="20px"
+          width="100%"
+          bg="black"
+          color="white"
+          variant="solid"
+          _hover={{ bg: "white", color: "black", border: "1px solid black" }}
+        >
+          Update Profile
+        </Button>
       </Flex>
     </Container>
   );
