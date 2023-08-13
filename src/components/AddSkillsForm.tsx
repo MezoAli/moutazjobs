@@ -84,8 +84,6 @@ const AddSkillsForm = () => {
     });
   };
 
-  console.log(skills);
-
   return (
     <>
       <Box textAlign="start" width="100%">
