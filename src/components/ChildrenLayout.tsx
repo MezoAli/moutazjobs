@@ -27,6 +27,10 @@ const ChildrenLayout = ({ children }: { children: React.ReactNode }) => {
             flexDir="column"
             justifyContent="space-between"
             alignItems="center"
+            position="sticky"
+            left={0}
+            top={0}
+            bottom={0}
           >
             <Sidebar isExpanded={isExpanded} setIsExpanded={setIsExpanded} />
           </GridItem>
