@@ -19,31 +19,25 @@ import {
   InputGroup,
   InputLeftAddon,
   useToast,
+  SimpleGrid,
 } from "@chakra-ui/react";
-import { MouseEventHandler, useState } from "react";
+import { Dispatch, MouseEventHandler, SetStateAction, useState } from "react";
 import { BsTrash } from "react-icons/bs";
 import { v4 as uuidv4 } from "uuid";
-// import { z } from "zod";
-// import { useForm } from "react-hook-form";
-// import { zodResolver } from "@hookform/resolvers/zod";
+import { Experience } from "./EmployeeForm";
+import { User } from "@/redux/slices/userSlice";
 
-interface Experience {
-  company: string;
-  role: string;
-  yearsOfExperince: string;
-  id: string;
+interface ExperienceProps {
+  experince: Experience[];
+  setExperince: Dispatch<SetStateAction<Experience[]>>;
+  user: User;
 }
 
-// const skillSchema = z.object({
-//   technology: z
-//     .string()
-//     .trim()
-//     .min(3, "Technology should be at least 3 characters"),
-//   rating: z.string().trim().min(1, "Rating can't be empty"),
-// });
-
-const AddExperienceForm = () => {
-  const [experince, setExperince] = useState<Experience[]>([]);
+const AddExperienceForm = ({
+  experince,
+  setExperince,
+  user,
+}: ExperienceProps) => {
   const [company, setCompany] = useState("");
   const [role, setRole] = useState("");
   const [yearsOfExperince, setYearsOfExperince] = useState("");
@@ -98,8 +92,8 @@ const AddExperienceForm = () => {
       </Box>
 
       <Flex gap="10px" flexDir="column" w="100%">
-        <Flex alignItems="center" justifyContent="space-between" gap="10px">
-          <FormControl isRequired>
+        <SimpleGrid columns={{ sm: 1, md: 3 }} spacing="20px" width="100%">
+          <FormControl>
             <FormLabel>Company</FormLabel>
             <Input
               type="text"
@@ -108,7 +102,7 @@ const AddExperienceForm = () => {
               onChange={(e) => setCompany(e.target.value)}
             />
           </FormControl>
-          <FormControl isRequired>
+          <FormControl>
             <FormLabel>Role</FormLabel>
             <Input
               type="text"
@@ -117,7 +111,7 @@ const AddExperienceForm = () => {
               onChange={(e) => setRole(e.target.value)}
             />
           </FormControl>
-          <FormControl isRequired>
+          <FormControl>
             <FormLabel>Years Of Experience</FormLabel>
             <InputGroup>
               <InputLeftAddon children="Year" />
@@ -129,7 +123,7 @@ const AddExperienceForm = () => {
               />
             </InputGroup>
           </FormControl>
-        </Flex>
+        </SimpleGrid>
         <Box textAlign="start" width="100%" mb="15px">
           <Button
             bg="black"

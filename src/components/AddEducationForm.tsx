@@ -19,31 +19,25 @@ import {
   InputGroup,
   InputLeftAddon,
   useToast,
+  SimpleGrid,
 } from "@chakra-ui/react";
-import { MouseEventHandler, useState } from "react";
+import { Dispatch, MouseEventHandler, SetStateAction, useState } from "react";
 import { BsTrash } from "react-icons/bs";
 import { v4 as uuidv4 } from "uuid";
-// import { z } from "zod";
-// import { useForm } from "react-hook-form";
-// import { zodResolver } from "@hookform/resolvers/zod";
+import { Education } from "./EmployeeForm";
+import { User } from "@/redux/slices/userSlice";
 
-interface Education {
-  qualification: string;
-  institution: string;
-  percentage: string;
-  id: string;
+interface EducationProps {
+  educations: Education[];
+  seteducations: Dispatch<SetStateAction<Education[]>>;
+  user: User;
 }
 
-// const skillSchema = z.object({
-//   technology: z
-//     .string()
-//     .trim()
-//     .min(3, "Technology should be at least 3 characters"),
-//   rating: z.string().trim().min(1, "Rating can't be empty"),
-// });
-
-const AddEducationForm = () => {
-  const [educations, seteducations] = useState<Education[]>([]);
+const AddEducationForm = ({
+  educations,
+  seteducations,
+  user,
+}: EducationProps) => {
   const [qualification, setQualification] = useState("");
   const [institution, setInstitution] = useState("");
   const [percentage, setPercentage] = useState("");
@@ -101,8 +95,8 @@ const AddEducationForm = () => {
       </Box>
 
       <Flex gap="10px" flexDir="column" w="100%">
-        <Flex alignItems="center" justifyContent="space-between" gap="10px">
-          <FormControl isRequired>
+        <SimpleGrid columns={{ sm: 1, md: 3 }} spacing="20px" width="100%">
+          <FormControl>
             <FormLabel>Qualification</FormLabel>
             <Input
               type="text"
@@ -111,7 +105,7 @@ const AddEducationForm = () => {
               onChange={(e) => setQualification(e.target.value)}
             />
           </FormControl>
-          <FormControl isRequired>
+          <FormControl>
             <FormLabel>Institution</FormLabel>
             <Input
               type="text"
@@ -120,7 +114,7 @@ const AddEducationForm = () => {
               onChange={(e) => setInstitution(e.target.value)}
             />
           </FormControl>
-          <FormControl isRequired>
+          <FormControl>
             <FormLabel>Percentage</FormLabel>
             <InputGroup>
               <InputLeftAddon children="%" />
@@ -132,7 +126,7 @@ const AddEducationForm = () => {
               />
             </InputGroup>
           </FormControl>
-        </Flex>
+        </SimpleGrid>
         <Box textAlign="start" width="100%" mb="15px">
           <Button
             bg="black"

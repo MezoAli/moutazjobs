@@ -29,11 +29,11 @@ const userSchema = new mongoose.Schema(
       type: [],
       require: false,
     },
-    education: {
+    educations: {
       type: [],
       require: false,
     },
-    experience: {
+    experince: {
       type: [],
       require: false,
     },

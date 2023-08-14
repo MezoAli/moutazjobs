@@ -18,41 +18,26 @@ import {
   TableContainer,
   InputGroup,
   InputLeftAddon,
+  SimpleGrid,
   useToast,
 } from "@chakra-ui/react";
-import { MouseEventHandler, useState } from "react";
+import { Dispatch, MouseEventHandler, SetStateAction, useState } from "react";
 import { BsTrash } from "react-icons/bs";
 import { v4 as uuidv4 } from "uuid";
-// import { z } from "zod";
-// import { useForm } from "react-hook-form";
-// import { zodResolver } from "@hookform/resolvers/zod";
+import { Skill } from "./EmployeeForm";
+import { User } from "@/redux/slices/userSlice";
 
-interface Skill {
-  technology: string;
-  rating: string;
-  id: string;
+interface SkillProps {
+  skills: Skill[];
+  setSkills: Dispatch<SetStateAction<Skill[]>>;
+  user: User;
 }
 
-// const skillSchema = z.object({
-//   technology: z
-//     .string()
-//     .trim()
-//     .min(3, "Technology should be at least 3 characters"),
-//   rating: z.string().trim().min(1, "Rating can't be empty"),
-// });
-
-const AddSkillsForm = () => {
-  const [skills, setSkills] = useState<Skill[]>([]);
+const AddSkillsForm = ({ skills, setSkills, user }: SkillProps) => {
   const [technology, setTechnology] = useState("");
   const [rating, setRating] = useState("");
   const toast = useToast();
-  //   const {
-  //     register,
-  //     handleSubmit,
-  //     formState: { errors },
-  //   } = useForm<Skill>({
-  //     resolver: zodResolver(skillSchema),
-  //   });
+
   const handleAddSkill:
     | MouseEventHandler<HTMLButtonElement>
     | undefined = () => {
@@ -71,15 +56,15 @@ const AddSkillsForm = () => {
       });
       return;
     }
-    setSkills((skills) => {
-      return [...skills, { technology, rating, id: uuidv4() }];
+    setSkills((items) => {
+      return [...items, { technology, rating, id: uuidv4() }];
     });
     setRating("");
     setTechnology("");
   };
 
   const handleDeleteSkill = (id: string) => {
-    setSkills((skills) => {
+    setSkills((items) => {
       return skills.filter((item) => item.id !== id);
     });
   };
@@ -93,8 +78,8 @@ const AddSkillsForm = () => {
       </Box>
 
       <Flex gap="10px" flexDir="column" w="100%">
-        <Flex alignItems="center" justifyContent="space-between" gap="10px">
-          <FormControl isRequired>
+        <SimpleGrid columns={{ sm: 1, md: 2 }} spacing="20px" width="100%">
+          <FormControl>
             <FormLabel>Technology</FormLabel>
             <Input
               type="text"
@@ -103,7 +88,7 @@ const AddSkillsForm = () => {
               onChange={(e) => setTechnology(e.target.value)}
             />
           </FormControl>
-          <FormControl isRequired>
+          <FormControl>
             <FormLabel>Rating</FormLabel>
             <InputGroup>
               <InputLeftAddon children="Out of 10" />
@@ -115,7 +100,7 @@ const AddSkillsForm = () => {
               />
             </InputGroup>
           </FormControl>
-        </Flex>
+        </SimpleGrid>
         <Box textAlign="start" width="100%" mb="15px">
           <Button
             bg="black"
