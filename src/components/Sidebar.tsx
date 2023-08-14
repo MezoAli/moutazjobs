@@ -24,6 +24,8 @@ const Sidebar = ({ isExpanded, setIsExpanded }: SidebarProps) => {
   const user = useAppSelector((state) => state.user.user);
   const router = useRouter();
   const toast = useToast();
+  console.log("side bar rendered");
+
   const getUser = async () => {
     try {
       dispatch(setLoading(true));
@@ -51,6 +53,7 @@ const Sidebar = ({ isExpanded, setIsExpanded }: SidebarProps) => {
       dispatch(setLoading(true));
       const response = await axios.post("/api/users/logout");
       dispatch(setCurrentUser(null));
+      router.push("/auth/login");
       toast({
         title: response.data.message,
         position: "top",
@@ -58,7 +61,6 @@ const Sidebar = ({ isExpanded, setIsExpanded }: SidebarProps) => {
         duration: 3000,
         isClosable: true,
       });
-      router.push("/auth/login");
     } catch (error: any) {
       toast({
         title: error.response.data.message || "something went wrong",

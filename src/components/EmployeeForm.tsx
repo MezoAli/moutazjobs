@@ -1,5 +1,5 @@
 "use client";
-import { useAppSelector } from "@/redux/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/redux/store/hooks";
 import {
   FormControl,
   FormLabel,
@@ -8,11 +8,15 @@ import {
   Textarea,
   Button,
   Divider,
+  useToast,
 } from "@chakra-ui/react";
 import AddSkillsForm from "./AddSkillsForm";
 import AddEducationForm from "./AddEducationForm";
 import AddExperienceForm from "./AddExperienceForm";
 import { FormEvent, useState } from "react";
+import { setLoading } from "@/redux/slices/loadingSlice";
+import axios from "axios";
+import { setCurrentUser } from "@/redux/slices/userSlice";
 
 export interface Education {
   qualification: string;
@@ -35,14 +39,20 @@ export interface Skill {
 }
 const EmployeeForm = () => {
   const user = useAppSelector((state) => state.user.user);
-  const [educations, seteducations] = useState<Education[]>([]);
-  const [experince, setExperince] = useState<Experience[]>([]);
-  const [skills, setSkills] = useState<Skill[]>([]);
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [carrierObjective, setCarrierObjective] = useState("");
-  console.log(user);
 
-  const handleSubmit = (e: FormEvent<HTMLDivElement>) => {
+  const [educations, seteducations] = useState<Education[]>(user?.educations!);
+  const [experince, setExperince] = useState<Experience[]>(user?.experince!);
+  const [skills, setSkills] = useState<Skill[]>(user?.skills!);
+  const [phoneNumber, setPhoneNumber] = useState(user?.phoneNumber!);
+  const [carrierObjective, setCarrierObjective] = useState(
+    user?.carrierObjective!
+  );
+  const toast = useToast();
+  const dispatch = useAppDispatch();
+  console.log("User : ", user);
+  console.log("Skills : ", skills);
+
+  const handleSubmit = async (e: FormEvent<HTMLDivElement>) => {
     e.preventDefault();
     const dataToBeSet = {
       ...user,
@@ -52,7 +62,28 @@ const EmployeeForm = () => {
       phoneNumber,
       carrierObjective,
     };
-    console.log(dataToBeSet);
+    try {
+      dispatch(setLoading(true));
+      const res = await axios.put("/api/users", dataToBeSet);
+      dispatch(setCurrentUser(res.data.data));
+      toast({
+        title: res.data.message,
+        position: "top",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+    } catch (error: any) {
+      toast({
+        title: error.response.data.message || "something went wrong",
+        position: "top",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    } finally {
+      dispatch(setLoading(false));
+    }
   };
 
   return (
@@ -87,7 +118,7 @@ const EmployeeForm = () => {
         <Input
           type="text"
           placeholder="Phone Number"
-          value={phoneNumber}
+          value={user?.phoneNumber ? user?.phoneNumber : phoneNumber}
           onChange={(e) => setPhoneNumber(e.target.value)}
         />
       </FormControl>
@@ -95,7 +126,9 @@ const EmployeeForm = () => {
         <FormLabel>Carrier Objective</FormLabel>
         <Textarea
           placeholder="Write Your Carrier Objective"
-          value={carrierObjective}
+          value={
+            user?.carrierObjective ? user?.carrierObjective : carrierObjective
+          }
           onChange={(e) => setCarrierObjective(e.target.value)}
         />
       </FormControl>

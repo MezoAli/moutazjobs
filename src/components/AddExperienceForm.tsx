@@ -42,13 +42,7 @@ const AddExperienceForm = ({
   const [role, setRole] = useState("");
   const [yearsOfExperince, setYearsOfExperince] = useState("");
   const toast = useToast();
-  //   const {
-  //     register,
-  //     handleSubmit,
-  //     formState: { errors },
-  //   } = useForm<Skill>({
-  //     resolver: zodResolver(skillSchema),
-  //   });
+
   const handleAddExperince:
     | MouseEventHandler<HTMLButtonElement>
     | undefined = () => {
@@ -61,7 +55,7 @@ const AddExperienceForm = ({
       yearsOfExperince.trim() === ""
     ) {
       toast({
-        title: "Please enter valid inputs",
+        title: "Please enter valid inputs for Experience",
         position: "top",
         status: "error",
         duration: 3000,
@@ -138,7 +132,7 @@ const AddExperienceForm = ({
           </Button>
         </Box>
       </Flex>
-      {experince.length > 0 && (
+      {experince?.length > 0 && (
         <TableContainer width="100%">
           <Table variant="striped" colorScheme="blackAlpha">
             <TableCaption>Experience</TableCaption>

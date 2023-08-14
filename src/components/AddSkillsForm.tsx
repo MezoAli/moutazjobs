@@ -48,7 +48,7 @@ const AddSkillsForm = ({ skills, setSkills, user }: SkillProps) => {
       rating.trim() === ""
     ) {
       toast({
-        title: "Please enter valid inputs",
+        title: "Please enter valid inputs for Skills",
         position: "top",
         status: "error",
         duration: 3000,
@@ -114,7 +114,7 @@ const AddSkillsForm = ({ skills, setSkills, user }: SkillProps) => {
           </Button>
         </Box>
       </Flex>
-      {skills.length > 0 && (
+      {skills?.length > 0 && (
         <TableContainer width="100%">
           <Table variant="striped" colorScheme="blackAlpha">
             <TableCaption>Skills</TableCaption>

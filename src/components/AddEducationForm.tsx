@@ -42,13 +42,7 @@ const AddEducationForm = ({
   const [institution, setInstitution] = useState("");
   const [percentage, setPercentage] = useState("");
   const toast = useToast();
-  //   const {
-  //     register,
-  //     handleSubmit,
-  //     formState: { errors },
-  //   } = useForm<Skill>({
-  //     resolver: zodResolver(skillSchema),
-  //   });
+
   const handleAddEducation:
     | MouseEventHandler<HTMLButtonElement>
     | undefined = () => {
@@ -140,7 +134,7 @@ const AddEducationForm = ({
           </Button>
         </Box>
       </Flex>
-      {educations.length > 0 && (
+      {educations?.length > 0 && (
         <TableContainer width="100%">
           <Table variant="striped" colorScheme="blackAlpha">
             <TableCaption>Educations</TableCaption>

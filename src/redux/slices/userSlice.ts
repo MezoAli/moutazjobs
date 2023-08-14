@@ -9,6 +9,7 @@ export interface User {
   name: string;
   updatedAt: string;
   _id: string;
+  phoneNumber?: string;
   skills?: Skill[];
   educations?: Education[];
   experince?: Experience[];

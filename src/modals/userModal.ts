@@ -25,6 +25,10 @@ const userSchema = new mongoose.Schema(
       require: true,
       default: false,
     },
+    phoneNumber: {
+      type: String,
+      require: true,
+    },
     skills: {
       type: [],
       require: false,
