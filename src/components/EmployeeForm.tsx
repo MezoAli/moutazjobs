@@ -49,8 +49,6 @@ const EmployeeForm = () => {
   );
   const toast = useToast();
   const dispatch = useAppDispatch();
-  console.log("User : ", user);
-  console.log("Skills : ", skills);
 
   const handleSubmit = async (e: FormEvent<HTMLDivElement>) => {
     e.preventDefault();

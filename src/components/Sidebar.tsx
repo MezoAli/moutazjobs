@@ -24,7 +24,6 @@ const Sidebar = ({ isExpanded, setIsExpanded }: SidebarProps) => {
   const user = useAppSelector((state) => state.user.user);
   const router = useRouter();
   const toast = useToast();
-  console.log("side bar rendered");
 
   const getUser = async () => {
     try {
