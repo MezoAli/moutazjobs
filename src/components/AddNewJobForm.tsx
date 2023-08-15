@@ -31,8 +31,11 @@ const addNewJobSchema = z.object({
     .min(20, "Description should be at least 20 characters"),
   type: z.string(),
   salary: z.string().trim(),
-  location: z.string().trim().min(6, "Title should be at least 6 characters"),
-  experience: z.string().trim().min(6, "Title should be at least 6 characters"),
+  location: z
+    .string()
+    .trim()
+    .min(6, "Location should be at least 6 characters"),
+  experience: z.string().trim(),
   mode: z.string(),
 });
 const AddNewJobForm = () => {
