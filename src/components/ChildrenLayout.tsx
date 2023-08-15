@@ -12,6 +12,7 @@ const ChildrenLayout = ({ children }: { children: React.ReactNode }) => {
   const isPublicPath =
     pathname === "/auth/login" || pathname === "/auth/register";
   const isLoading = useAppSelector((state) => state.loading.isLoading);
+  const user = useAppSelector((state) => state.user.user);
 
   return (
     <>

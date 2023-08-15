@@ -5,7 +5,6 @@ connectDB();
 export async function PUT(req: NextRequest) {
   try {
     const reqBody = await req.json();
-    console.log(reqBody);
     const user = await User.findByIdAndUpdate(reqBody._id, reqBody, {
       new: true,
     }).select("-password");

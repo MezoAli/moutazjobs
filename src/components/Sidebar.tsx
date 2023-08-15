@@ -87,10 +87,14 @@ const Sidebar = ({ isExpanded, setIsExpanded }: SidebarProps) => {
       title: "Profile Page",
     },
     {
-      name: "Applications",
+      name: user?.employmentType === "Employee" ? "Applications" : "PostedJobs",
       icon: BsCardList,
-      path: "/applications",
-      title: "Applications Page",
+      path:
+        user?.employmentType === "Employee" ? "/applications" : "/postedJobs",
+      title:
+        user?.employmentType === "Employee"
+          ? "Applications Page"
+          : "Posted Jobs Page",
     },
     {
       name: "Settings",
