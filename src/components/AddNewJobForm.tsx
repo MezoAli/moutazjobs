@@ -1,6 +1,6 @@
 "use client";
 import { setLoading } from "@/redux/slices/loadingSlice";
-import { useAppDispatch } from "@/redux/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/redux/store/hooks";
 import {
   Flex,
   Button,
@@ -14,6 +14,7 @@ import {
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -25,6 +26,7 @@ type NewJobFormType = {
   location: string;
   experience: string;
   mode: string;
+  userId: string;
 };
 
 const addNewJobSchema = z.object({
@@ -54,11 +56,14 @@ const AddNewJobForm = () => {
 
   const toast = useToast();
   const dispatch = useAppDispatch();
+  const user = useAppSelector((state) => state.user.user);
+  const router = useRouter();
 
   const onSubmit = async (data: NewJobFormType) => {
     try {
       dispatch(setLoading(true));
-      const res = await axios.post("/api/jobs/newJob", data);
+      data.userId = user._id;
+      const res = await axios.post("/api/jobs", data);
       toast({
         title: res.data.message,
         position: "top",
@@ -66,6 +71,7 @@ const AddNewJobForm = () => {
         duration: 3000,
         isClosable: true,
       });
+      router.push("/postedJobs");
     } catch (error: any) {
       toast({
         title: error.response.data.message || "something went wrong",
