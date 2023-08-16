@@ -1,4 +1,6 @@
 "use client";
+import { setLoading } from "@/redux/slices/loadingSlice";
+import { useAppDispatch } from "@/redux/store/hooks";
 import {
   Flex,
   Button,
@@ -8,12 +10,14 @@ import {
   Textarea,
   Select,
   Text,
+  useToast,
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-interface NewJobForm {
+type NewJobFormType = {
   title: string;
   description: string;
   type: string;
@@ -21,7 +25,7 @@ interface NewJobForm {
   location: string;
   experience: string;
   mode: string;
-}
+};
 
 const addNewJobSchema = z.object({
   title: z.string().trim().min(6, "Title should be at least 6 characters"),
@@ -44,12 +48,36 @@ const AddNewJobForm = () => {
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<NewJobForm>({
+  } = useForm<NewJobFormType>({
     resolver: zodResolver(addNewJobSchema),
   });
 
-  const onSubmit = (data: NewJobForm) => {
-    console.log(data);
+  const toast = useToast();
+  const dispatch = useAppDispatch();
+
+  const onSubmit = async (data: NewJobFormType) => {
+    try {
+      dispatch(setLoading(true));
+      const res = await axios.post("/api/jobs/newJob", data);
+      toast({
+        title: res.data.message,
+        position: "top",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+    } catch (error: any) {
+      toast({
+        title: error.response.data.message || "something went wrong",
+        position: "top",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    } finally {
+      dispatch(setLoading(false));
+      reset();
+    }
   };
   return (
     <Flex
