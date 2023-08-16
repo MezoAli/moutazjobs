@@ -1,19 +1,10 @@
 import mongoose from "mongoose";
 
-//   title: string;
-//   description: string;
-//   type: string;
-//   salary: string;
-//   location: string;
-//   experience: string;
-//   mode: string;
-
 const jobSchema = new mongoose.Schema(
   {
     title: {
       type: String,
       require: true,
-      unique: true,
     },
     description: {
       type: String,
