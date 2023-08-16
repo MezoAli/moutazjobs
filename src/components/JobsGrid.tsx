@@ -15,7 +15,7 @@ const JobGrid = ({ jobs }: JobGridProps) => {
       width="100%"
       my="15px"
     >
-      {jobs.map((job) => {
+      {jobs?.map((job) => {
         return <JobCard key={job._id} job={job} />;
       })}
     </SimpleGrid>

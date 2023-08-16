@@ -1,5 +1,8 @@
 "use client";
 import JobGrid from "@/components/JobsGrid";
+import JobsTable from "@/components/JobsTable";
+import { setLoading } from "@/redux/slices/loadingSlice";
+import { useAppDispatch } from "@/redux/store/hooks";
 import { Container, Flex, Heading, Button, Divider } from "@chakra-ui/react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
@@ -23,12 +26,16 @@ export interface Job {
 const PostedJobsPage = () => {
   const router = useRouter();
   const [jobs, setJobs] = useState<Job[]>([]);
+  const dispatch = useAppDispatch();
   const getJobs = async () => {
     try {
+      dispatch(setLoading(true));
       const res = await axios.get("/api/jobs");
       setJobs(res.data.data);
     } catch (error: any) {
       console.log(error.response.data.message);
+    } finally {
+      dispatch(setLoading(false));
     }
   };
   useEffect(() => {
@@ -52,7 +59,7 @@ const PostedJobsPage = () => {
         </Button>
       </Flex>
       <Divider />
-      <JobGrid jobs={jobs} />
+      <JobsTable jobs={jobs} />
     </Container>
   );
 };
