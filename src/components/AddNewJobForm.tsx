@@ -97,7 +97,12 @@ const AddNewJobForm = () => {
     >
       <FormControl isRequired>
         <FormLabel>Title</FormLabel>
-        <Input type="text" placeholder="Job Title" {...register("title")} />
+        <Input
+          type="text"
+          placeholder="Job Title"
+          {...register("title")}
+          defaultValue="hello"
+        />
         <Text color="red.400" fontSize="sm" my="5px">
           {errors.title && errors.title?.message}
         </Text>

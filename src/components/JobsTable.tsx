@@ -61,7 +61,7 @@ const JobsTable = ({ jobs }: JobTableProps) => {
                         boxSize={5}
                         color="gray.400"
                         onClick={() => {
-                          router.push(`/postedJobs/${job._id}`);
+                          router.push(`/postedJobs/edit/${job._id}`);
                         }}
                       />
                       <Icon
