@@ -1,10 +1,15 @@
 "use client";
 import AddNewJobForm from "@/components/AddNewJobForm";
+import { useAppSelector } from "@/redux/store/hooks";
 import { Container, Flex, Heading, Button, Divider } from "@chakra-ui/react";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 
 const PostedJobsPage = () => {
   const router = useRouter();
+  const user = useAppSelector((state) => state.user.user);
+  if (user.employmentType !== "Employer") {
+    redirect("/");
+  }
   return (
     <Container maxW="3xl">
       <Flex justifyContent="space-between" alignItems="center">

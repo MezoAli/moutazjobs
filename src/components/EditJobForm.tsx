@@ -1,7 +1,7 @@
 "use client";
 import { Job } from "@/app/postedJobs/page";
 import { setLoading } from "@/redux/slices/loadingSlice";
-import { useAppDispatch } from "@/redux/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/redux/store/hooks";
 import {
   Flex,
   Button,
@@ -30,6 +30,7 @@ type NewJobFormType = {
   location: string;
   experience: string;
   mode: string;
+  userId: string;
 };
 
 interface EditJobProps {
@@ -64,10 +65,12 @@ const EditJobForm = ({ job }: EditJobProps) => {
   const toast = useToast();
   const dispatch = useAppDispatch();
   const router = useRouter();
+  const user = useAppSelector((state) => state.user.user);
 
   const onSubmit = async (data: NewJobFormType) => {
     try {
       dispatch(setLoading(true));
+      data.userId = user?._id;
       const res = await axios.put(`/api/jobs/${job._id}`, data);
       toast({
         title: res.data.message,

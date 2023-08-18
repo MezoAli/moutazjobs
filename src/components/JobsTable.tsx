@@ -12,6 +12,7 @@ import {
   TableCaption,
   TableContainer,
   useToast,
+  Text,
 } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { BsTrash } from "react-icons/bs";
@@ -48,67 +49,74 @@ const JobsTable = ({ jobs }: JobTableProps) => {
         isClosable: true,
       });
     } finally {
+      // router.refresh();
       dispatch(setLoading(false));
     }
   };
   return (
     <>
-      <TableContainer width="100%" my="30px">
-        <Table variant="striped" colorScheme="blackAlpha">
-          <TableCaption>Jobs</TableCaption>
-          <Thead>
-            <Tr>
-              <Th textAlign="center">Title</Th>
-              <Th textAlign="center">Posted On</Th>
-              <Th textAlign="center">Location</Th>
-              <Th textAlign="center">Job Type</Th>
-              <Th textAlign="center">Work Mode</Th>
-              <Th textAlign="center">Experience</Th>
-              <Th textAlign="center">Actions</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {jobs.map((job) => {
-              return (
-                <Tr key={job._id}>
-                  <Td textAlign="center">{job.title}</Td>
-                  <Td textAlign="center">
-                    {dayjs(job.createdAt).format("DD/MM/YYYY")}
-                  </Td>
-                  <Td textAlign="center">{job.location}</Td>
-                  <Td textAlign="center">{job.type}</Td>
-                  <Td textAlign="center">{job.mode}</Td>
-                  <Td textAlign="center">{job.experience}</Td>
-                  <Td textAlign="center" cursor="pointer">
-                    <Flex
-                      justifyContent="center"
-                      alignItems="center"
-                      gap="25px"
-                    >
-                      <Icon
-                        as={BiEdit}
-                        boxSize={5}
-                        color="gray.400"
-                        onClick={() => {
-                          router.push(`/postedJobs/edit/${job._id}`);
-                        }}
-                      />
-                      <Icon
-                        as={BsTrash}
-                        boxSize={5}
-                        color="red.400"
-                        onClick={() => {
-                          handleDeleteJob(job._id);
-                        }}
-                      />
-                    </Flex>
-                  </Td>
-                </Tr>
-              );
-            })}
-          </Tbody>
-        </Table>
-      </TableContainer>
+      {jobs.length === 0 ? (
+        <Text textAlign="center" fontSize="2xl" my="30px">
+          You Don't Have any Posted Jobs
+        </Text>
+      ) : (
+        <TableContainer width="100%" my="30px">
+          <Table variant="striped" colorScheme="blackAlpha">
+            <TableCaption>Jobs</TableCaption>
+            <Thead>
+              <Tr>
+                <Th textAlign="center">Title</Th>
+                <Th textAlign="center">Posted On</Th>
+                <Th textAlign="center">Location</Th>
+                <Th textAlign="center">Job Type</Th>
+                <Th textAlign="center">Work Mode</Th>
+                <Th textAlign="center">Experience</Th>
+                <Th textAlign="center">Actions</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {jobs.map((job) => {
+                return (
+                  <Tr key={job._id}>
+                    <Td textAlign="center">{job.title}</Td>
+                    <Td textAlign="center">
+                      {dayjs(job.createdAt).format("DD/MM/YYYY")}
+                    </Td>
+                    <Td textAlign="center">{job.location}</Td>
+                    <Td textAlign="center">{job.type}</Td>
+                    <Td textAlign="center">{job.mode}</Td>
+                    <Td textAlign="center">{job.experience}</Td>
+                    <Td textAlign="center" cursor="pointer">
+                      <Flex
+                        justifyContent="center"
+                        alignItems="center"
+                        gap="25px"
+                      >
+                        <Icon
+                          as={BiEdit}
+                          boxSize={5}
+                          color="gray.400"
+                          onClick={() => {
+                            router.push(`/postedJobs/edit/${job._id}`);
+                          }}
+                        />
+                        <Icon
+                          as={BsTrash}
+                          boxSize={5}
+                          color="red.400"
+                          onClick={() => {
+                            handleDeleteJob(job._id);
+                          }}
+                        />
+                      </Flex>
+                    </Td>
+                  </Tr>
+                );
+              })}
+            </Tbody>
+          </Table>
+        </TableContainer>
+      )}
     </>
   );
 };

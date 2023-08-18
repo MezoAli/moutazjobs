@@ -6,6 +6,11 @@ import jwt from "jsonwebtoken";
 
 connectDB();
 
+interface TokenData {
+  userId: string;
+  userEmail: string;
+}
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
@@ -25,7 +30,7 @@ export async function POST(req: NextRequest) {
     const dataToBeSigned = {
       userId: user._id,
       userEmail: user.email,
-    };
+    } as unknown as TokenData;
 
     const token = jwt.sign(dataToBeSigned, process.env.JWT_SECRET!, {
       expiresIn: "1d",
