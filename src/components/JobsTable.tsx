@@ -11,17 +11,46 @@ import {
   Icon,
   TableCaption,
   TableContainer,
+  useToast,
 } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { BsTrash } from "react-icons/bs";
 import { BiEdit } from "react-icons/bi";
 import { useRouter } from "next/navigation";
+import { useAppDispatch } from "@/redux/store/hooks";
+import { setLoading } from "@/redux/slices/loadingSlice";
+import axios from "axios";
 
 interface JobTableProps {
   jobs: Job[];
 }
 const JobsTable = ({ jobs }: JobTableProps) => {
   const router = useRouter();
+  const dispatch = useAppDispatch();
+  const toast = useToast();
+  const handleDeleteJob = async (jobId: string) => {
+    try {
+      dispatch(setLoading(true));
+      const res = await axios.delete(`/api/jobs/${jobId}`);
+      toast({
+        title: res.data.message,
+        position: "top",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+    } catch (error: any) {
+      toast({
+        title: error.response.data.message || "something went wrong",
+        position: "top",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
   return (
     <>
       <TableContainer width="100%" my="30px">
@@ -69,7 +98,7 @@ const JobsTable = ({ jobs }: JobTableProps) => {
                         boxSize={5}
                         color="red.400"
                         onClick={() => {
-                          console.log("delete");
+                          handleDeleteJob(job._id);
                         }}
                       />
                     </Flex>

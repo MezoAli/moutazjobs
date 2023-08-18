@@ -1,5 +1,4 @@
 "use client";
-import JobGrid from "@/components/JobsGrid";
 import JobsTable from "@/components/JobsTable";
 import { setLoading } from "@/redux/slices/loadingSlice";
 import { useAppDispatch } from "@/redux/store/hooks";
