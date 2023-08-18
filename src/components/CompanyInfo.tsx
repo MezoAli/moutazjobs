@@ -4,11 +4,11 @@ import { Container, Heading, Text, Flex } from "@chakra-ui/react";
 
 const CompanyInfo = ({ company }: { company: User }) => {
   return (
-    <Container maxW="3xl">
-      <Heading as="h2" fontSize="2xl" my="20px">
+    <Container maxW="3xl" my="20px">
+      <Heading as="h2" fontSize="2xl" my="30px">
         Company Info
       </Heading>
-      <Flex direction="column" gap="30pxpx">
+      <Flex direction="column" gap="30px">
         <Flex justifyContent="space-between" alignItems="center">
           <Text fontWeight="semibold" fontSize="lg">
             Company Name

@@ -1,10 +1,10 @@
 import { Job } from "@/app/postedJobs/page";
+import JobInfo from "@/components/JobInfo";
 import axios from "axios";
 
 const getData = async (jobId: string) => {
   try {
     const res = await axios.get(`${process.env.SITE_URL}/api/jobs/${jobId}`);
-    console.log(res);
 
     return res.data.data;
   } catch (error: any) {
@@ -18,7 +18,7 @@ const JobInfoPage = async ({
   params: { jobId: string };
 }) => {
   const jobData: Job = await getData(jobId);
-  return <div> jobTitle : {jobData.title}</div>;
+  return <JobInfo job={jobData} />;
 };
 
 export default JobInfoPage;
