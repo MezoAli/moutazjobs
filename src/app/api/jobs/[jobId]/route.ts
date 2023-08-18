@@ -1,4 +1,3 @@
-import { verifyJWT } from "@/lib/verifyJWT";
 import Job from "@/modals/jobModal";
 import { NextRequest, NextResponse } from "next/server";
 

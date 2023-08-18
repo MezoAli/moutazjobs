@@ -21,7 +21,6 @@ const getData = async (jobId: string) => {
 const EditPage = async (props: EditPageProps) => {
   const jobId = props.params.jobId;
   const jobData: Job = await getData(jobId);
-  console.log(jobData);
 
   return <EditJobForm job={jobData} />;
 };
