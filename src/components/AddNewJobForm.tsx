@@ -27,6 +27,7 @@ type NewJobFormType = {
   experience: string;
   mode: string;
   userId: string;
+  companyName: string;
 };
 
 const addNewJobSchema = z.object({
@@ -63,6 +64,7 @@ const AddNewJobForm = () => {
     try {
       dispatch(setLoading(true));
       data.userId = user._id;
+      data.companyName = user.name;
       const res = await axios.post("/api/jobs", data);
       toast({
         title: res.data.message,

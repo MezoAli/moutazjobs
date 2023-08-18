@@ -25,6 +25,7 @@ const JobCard = ({ job }: JobCardProps) => {
       </CardHeader>
       <CardBody>
         <Text>Job Description : {job.description}</Text>
+        <Text>Company Name : {job?.companyName}</Text>
 
         <Text>Location : {job.location}</Text>
         <Text>Job Mode : {job.mode}</Text>

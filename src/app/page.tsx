@@ -14,13 +14,7 @@ const getUser = async () => {
 };
 
 const getAllJobs = async () => {
-  const cookie = cookies();
-  const token = cookie.get("token")?.value;
-  const res = await axios.get(`${process.env.SITE_URL}/api/jobs`, {
-    headers: {
-      Cookie: `token=${token}`,
-    },
-  });
+  const res = await axios.get(`${process.env.SITE_URL}/api/jobs`);
   return res.data.data;
 };
 export default async function Home() {

@@ -1,7 +1,7 @@
 "use client";
 import JobsTable from "@/components/JobsTable";
 import { setLoading } from "@/redux/slices/loadingSlice";
-import { useAppDispatch } from "@/redux/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/redux/store/hooks";
 import { Container, Flex, Heading, Button, Divider } from "@chakra-ui/react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
@@ -20,16 +20,18 @@ export interface Job {
   updatedAt: string;
   userId: string;
   _id: string;
+  companyName: string;
 }
 
 const PostedJobsPage = () => {
   const router = useRouter();
   const [jobs, setJobs] = useState<Job[]>([]);
   const dispatch = useAppDispatch();
+  const user = useAppSelector((state) => state.user.user);
   const getJobs = async () => {
     try {
       dispatch(setLoading(true));
-      const res = await axios.get("/api/jobs");
+      const res = await axios.get(`/api/jobs?userId=${user._id}`);
       setJobs(res.data.data);
     } catch (error: any) {
       console.log(error.response.data.message);
