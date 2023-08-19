@@ -10,8 +10,18 @@ import {
   Text,
   Flex,
   Button,
+  Table,
+  Thead,
+  Tbody,
+  Tr,
+  Th,
+  Td,
+  Icon,
+  TableCaption,
+  TableContainer,
 } from "@chakra-ui/react";
 import axios from "axios";
+import dayjs from "dayjs";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -63,6 +73,37 @@ const ApplicationsPage = () => {
             Back to Jobs
           </Button>
         </Flex>
+      )}
+      {applications.length > 0 && (
+        <TableContainer width="100%">
+          <Table variant="striped" colorScheme="blackAlpha">
+            <TableCaption>Applications</TableCaption>
+            <Thead>
+              <Tr>
+                <Th textAlign="center">Application Id</Th>
+                <Th textAlign="center">Job Title</Th>
+                <Th textAlign="center">Company Name</Th>
+                <Th textAlign="center">Job Posted At</Th>
+                <Th textAlign="center">Application Status</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {applications.map((app) => {
+                return (
+                  <Tr key={app._id}>
+                    <Td textAlign="center">{app?._id}</Td>
+                    <Td textAlign="center">{app?.job?.title}</Td>
+                    <Td textAlign="center">{app?.job?.companyName}</Td>
+                    <Td textAlign="center">
+                      {dayjs(app?.job?.createdAt).format("DD/MM/YYYY")}
+                    </Td>
+                    <Td textAlign="center">{app?.status}</Td>
+                  </Tr>
+                );
+              })}
+            </Tbody>
+          </Table>
+        </TableContainer>
       )}
     </Container>
   );
