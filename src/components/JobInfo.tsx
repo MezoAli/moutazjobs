@@ -1,5 +1,7 @@
 "use client";
 import { Job } from "@/app/postedJobs/page";
+import { setLoading } from "@/redux/slices/loadingSlice";
+import { useAppDispatch, useAppSelector } from "@/redux/store/hooks";
 import {
   Container,
   Heading,
@@ -7,12 +9,46 @@ import {
   Flex,
   Button,
   Divider,
+  useToast,
 } from "@chakra-ui/react";
+import axios from "axios";
 import dayjs from "dayjs";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 const JobInfo = ({ job }: { job: Job }) => {
   const router = useRouter();
+  const user = useAppSelector((state) => state.user.user);
+  const dispatch = useAppDispatch();
+  const toast = useToast();
+
+  const handleApplyJob = async () => {
+    try {
+      dispatch(setLoading(true));
+      const res = await axios.post("/api/applications", {
+        user: user._id,
+        job: job._id,
+        status: "pending",
+      });
+      toast({
+        title: res.data.message,
+        position: "top",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+      router.push("/postedJobs");
+    } catch (error: any) {
+      toast({
+        title: error.response.data.message || "something went wrong",
+        position: "top",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
   return (
     <Container maxW="3xl" my="20px">
       <Heading as="h2" fontSize="2xl" my="30px">
@@ -69,21 +105,28 @@ const JobInfo = ({ job }: { job: Job }) => {
         </Text>
         <Divider />
         <Text>{job.description}</Text>
-        <Flex justifyContent="flex-start" alignItems="center" gap="20px">
-          <Button variant="outline" onClick={() => router.back()}>
-            Back to Jobs
-          </Button>
-          <Button
-            bg="black"
-            color="white"
-            variant="solid"
-            my="10px"
-            width="fit-content"
-            _hover={{ bg: "white", color: "black", border: "1px solid black" }}
-          >
-            Apply For Job
-          </Button>
-        </Flex>
+        {user.employmentType === "Employee" && (
+          <Flex justifyContent="flex-start" alignItems="center" gap="20px">
+            <Button variant="outline" onClick={() => router.back()}>
+              Back to Jobs
+            </Button>
+            <Button
+              bg="black"
+              color="white"
+              variant="solid"
+              my="10px"
+              width="fit-content"
+              _hover={{
+                bg: "white",
+                color: "black",
+                border: "1px solid black",
+              }}
+              onClick={() => handleApplyJob()}
+            >
+              Apply For Job
+            </Button>
+          </Flex>
+        )}
       </Flex>
     </Container>
   );
