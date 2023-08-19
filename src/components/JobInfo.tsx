@@ -15,12 +15,38 @@ import axios from "axios";
 import dayjs from "dayjs";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 const JobInfo = ({ job }: { job: Job }) => {
   const router = useRouter();
   const user = useAppSelector((state) => state.user.user);
+  const [applications, setApplications] = useState<any[]>([]);
   const dispatch = useAppDispatch();
   const toast = useToast();
 
+  const getUserApplications = async () => {
+    try {
+      dispatch(setLoading(true));
+      const res = await axios.get(
+        `/api/applications?userId=${user._id}&jobId=${job._id}`
+      );
+      setApplications(res.data.data);
+    } catch (error: any) {
+      toast({
+        title: error.response.data.message || "something went wrong",
+        position: "top",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
+  console.log(applications);
+
+  useEffect(() => {
+    getUserApplications();
+  }, []);
   const handleApplyJob = async () => {
     try {
       dispatch(setLoading(true));
@@ -36,7 +62,7 @@ const JobInfo = ({ job }: { job: Job }) => {
         duration: 3000,
         isClosable: true,
       });
-      router.push("/postedJobs");
+      router.push("/");
     } catch (error: any) {
       toast({
         title: error.response.data.message || "something went wrong",
@@ -110,21 +136,30 @@ const JobInfo = ({ job }: { job: Job }) => {
             <Button variant="outline" onClick={() => router.back()}>
               Back to Jobs
             </Button>
-            <Button
-              bg="black"
-              color="white"
-              variant="solid"
-              my="10px"
-              width="fit-content"
-              _hover={{
-                bg: "white",
-                color: "black",
-                border: "1px solid black",
-              }}
-              onClick={() => handleApplyJob()}
-            >
-              Apply For Job
-            </Button>
+            {applications.length === 0 ? (
+              <Button
+                bg="black"
+                color="white"
+                variant="solid"
+                my="10px"
+                width="fit-content"
+                _hover={{
+                  bg: "white",
+                  color: "black",
+                  border: "1px solid black",
+                }}
+                onClick={() => handleApplyJob()}
+              >
+                Apply For Job
+              </Button>
+            ) : (
+              ""
+            )}
+            {applications.length > 0 && (
+              <Text fontSize="2xl" color="red.400" fontWeight="semibold">
+                You Already Applied For That Job
+              </Text>
+            )}
           </Flex>
         )}
       </Flex>

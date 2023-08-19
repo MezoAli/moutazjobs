@@ -24,11 +24,17 @@ export async function GET(req: NextRequest) {
     const { searchParams } = new URL(req.url);
 
     const userId = searchParams.get("userId");
+    const jobId = searchParams.get("jobId");
     const filterObject: any = {};
     if (userId) {
-      filterObject.userId = userId;
+      filterObject.user = userId;
     }
-    const applications = await Application.find(filterObject).populate("jobs");
+    if (jobId) {
+      filterObject.job = jobId;
+    }
+    const applications = await Application.find(filterObject)
+      .populate("job")
+      .populate("user");
     return NextResponse.json(
       { message: "get Data", data: applications },
       { status: 200 }
