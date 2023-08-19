@@ -42,7 +42,6 @@ const JobInfo = ({ job }: { job: Job }) => {
       dispatch(setLoading(false));
     }
   };
-  console.log(applications);
 
   useEffect(() => {
     getUserApplications();
