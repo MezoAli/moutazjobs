@@ -17,6 +17,12 @@ const CompanyInfo = ({ company }: { company: User }) => {
         </Flex>
         <Flex justifyContent="space-between" alignItems="center">
           <Text fontWeight="semibold" fontSize="lg">
+            About Us
+          </Text>
+          <Text>{company.about}</Text>
+        </Flex>
+        <Flex justifyContent="space-between" alignItems="center">
+          <Text fontWeight="semibold" fontSize="lg">
             Address
           </Text>
           <Text>{company.address}</Text>
@@ -32,6 +38,12 @@ const CompanyInfo = ({ company }: { company: User }) => {
             Establishment Year
           </Text>
           <Text>{company.establishmentYear}</Text>
+        </Flex>
+        <Flex justifyContent="space-between" alignItems="center">
+          <Text fontWeight="semibold" fontSize="lg">
+            Phone Number
+          </Text>
+          <Text>{company.phoneNumber}</Text>
         </Flex>
         <Flex justifyContent="space-between" alignItems="center">
           <Text fontWeight="semibold" fontSize="lg">
