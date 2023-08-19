@@ -15,14 +15,8 @@ export async function GET(req: NextRequest, { params }: any) {
 
 export async function PUT(req: NextRequest, { params }: any) {
   try {
-    // const userData: any = verifyJWT(req);
     const reqBody = await req.json();
-    // if (userData?.userId !== reqBody?.userId) {
-    //   return NextResponse.json(
-    //     { message: "You Are Not Allowed To Modify This Job" },
-    //     { status: 403 }
-    //   );
-    // }
+
     const job = await Job.findByIdAndUpdate(params.jobId, reqBody, {
       new: true,
     });
