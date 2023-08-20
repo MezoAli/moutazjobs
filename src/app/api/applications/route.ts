@@ -43,3 +43,21 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ message: error.message }, { status: 500 });
   }
 }
+
+export async function PUT(req: NextRequest) {
+  try {
+    const { searchParams } = new URL(req.url);
+    const appId = searchParams.get("appId");
+    const reqBody = await req.json();
+
+    const applications = await Application.findByIdAndUpdate(appId, reqBody, {
+      new: true,
+    });
+    return NextResponse.json(
+      { message: "Applicant Status Updated Successfully" },
+      { status: 201 }
+    );
+  } catch (error: any) {
+    return NextResponse.json({ message: error.message }, { status: 500 });
+  }
+}

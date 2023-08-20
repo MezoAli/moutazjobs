@@ -12,7 +12,7 @@ const applicationScehma = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["pending", "Accepted", "Rejected"],
+      enum: ["pending", "shortlisted", "rejected"],
     },
   },
   {

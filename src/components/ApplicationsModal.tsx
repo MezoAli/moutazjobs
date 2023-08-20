@@ -20,12 +20,19 @@ import {
   Td,
   Icon,
   Text,
+  Select,
   TableCaption,
   TableContainer,
 } from "@chakra-ui/react";
 import axios from "axios";
 import dayjs from "dayjs";
-import { Dispatch, SetStateAction, useState, useEffect } from "react";
+import {
+  Dispatch,
+  SetStateAction,
+  useState,
+  useEffect,
+  ChangeEvent,
+} from "react";
 
 interface ApplicationModalProps {
   isOpen: boolean;
@@ -62,6 +69,13 @@ const ApplicationsModal = ({
   useEffect(() => {
     getJobApplications();
   }, []);
+
+  const handleStatusChange = (
+    e: ChangeEvent<HTMLSelectElement>,
+    appId: string
+  ) => {
+    console.log(e.target.value, appId);
+  };
   return (
     <Modal isOpen={isOpen} size="2xl" onClose={() => setIsOpen(false)}>
       <ModalOverlay />
@@ -97,7 +111,18 @@ const ApplicationsModal = ({
                         <Td textAlign="center">
                           {dayjs(app?.createdAt).format("DD/MM/YYYY")}
                         </Td>
-                        <Td textAlign="center">{app?.status}</Td>
+                        <Td textAlign="center">
+                          <Select
+                            width="150px"
+                            placeholder="Select option"
+                            defaultValue={app?.status}
+                            onChange={(e) => handleStatusChange(e, app._id)}
+                          >
+                            <option value="pending">Pending</option>
+                            <option value="shortlisted">Shortlisted</option>
+                            <option value="rejected">Rejected</option>
+                          </Select>
+                        </Td>
                         <Td textAlign="center" cursor="pointer">
                           {/* <Flex
                           justifyContent="center"
