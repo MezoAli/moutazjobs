@@ -70,11 +70,33 @@ const ApplicationsModal = ({
     getJobApplications();
   }, []);
 
-  const handleStatusChange = (
+  const handleStatusChange = async (
     e: ChangeEvent<HTMLSelectElement>,
     appId: string
   ) => {
-    console.log(e.target.value, appId);
+    try {
+      dispatch(setLoading(true));
+      const res = await axios.put(`/api/applications?appId=${appId}`, {
+        status: e.target.value,
+      });
+      toast({
+        title: res.data.message,
+        position: "top",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+    } catch (error: any) {
+      toast({
+        title: error.response.data.message || "something went wrong",
+        position: "top",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    } finally {
+      dispatch(setLoading(false));
+    }
   };
   return (
     <Modal isOpen={isOpen} size="2xl" onClose={() => setIsOpen(false)}>

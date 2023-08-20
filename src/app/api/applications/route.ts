@@ -50,7 +50,7 @@ export async function PUT(req: NextRequest) {
     const appId = searchParams.get("appId");
     const reqBody = await req.json();
 
-    const applications = await Application.findByIdAndUpdate(appId, reqBody, {
+    await Application.findByIdAndUpdate(appId, reqBody, {
       new: true,
     });
     return NextResponse.json(
