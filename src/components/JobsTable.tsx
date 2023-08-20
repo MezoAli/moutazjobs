@@ -17,10 +17,13 @@ import {
 import dayjs from "dayjs";
 import { BsTrash } from "react-icons/bs";
 import { BiEdit } from "react-icons/bi";
+import { LuClipboardList } from "react-icons/lu";
 import { useRouter } from "next/navigation";
 import { useAppDispatch } from "@/redux/store/hooks";
 import { setLoading } from "@/redux/slices/loadingSlice";
 import axios from "axios";
+import { useState } from "react";
+import ApplicationsModal from "./ApplicationsModal";
 
 interface JobTableProps {
   jobs: Job[];
@@ -29,6 +32,8 @@ const JobsTable = ({ jobs }: JobTableProps) => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const toast = useToast();
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedJob, setSelectedJob] = useState<Job | undefined>();
   const handleDeleteJob = async (jobId: string) => {
     try {
       dispatch(setLoading(true));
@@ -55,6 +60,13 @@ const JobsTable = ({ jobs }: JobTableProps) => {
   };
   return (
     <>
+      {isOpen && (
+        <ApplicationsModal
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
+          job={selectedJob!}
+        />
+      )}
       {jobs.length === 0 ? (
         <Text textAlign="center" fontSize="2xl" my="30px">
           You Don't Have any Posted Jobs
@@ -106,6 +118,16 @@ const JobsTable = ({ jobs }: JobTableProps) => {
                           color="red.400"
                           onClick={() => {
                             handleDeleteJob(job._id);
+                          }}
+                        />
+                        <Icon
+                          title="applications"
+                          as={LuClipboardList}
+                          boxSize={5}
+                          color="blue.400"
+                          onClick={() => {
+                            setIsOpen(true);
+                            setSelectedJob(job);
                           }}
                         />
                       </Flex>

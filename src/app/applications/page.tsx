@@ -47,7 +47,6 @@ const ApplicationsPage = () => {
       dispatch(setLoading(false));
     }
   };
-  console.log(applications);
 
   useEffect(() => {
     getUserApplications();
