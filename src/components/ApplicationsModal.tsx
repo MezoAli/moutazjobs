@@ -18,7 +18,6 @@ import {
   Tr,
   Th,
   Td,
-  Icon,
   Text,
   Select,
   TableCaption,
@@ -26,6 +25,7 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import dayjs from "dayjs";
+import Link from "next/link";
 import {
   Dispatch,
   SetStateAction,
@@ -127,7 +127,15 @@ const ApplicationsModal = ({
                   {applications.map((app) => {
                     return (
                       <Tr key={app._id}>
-                        <Td textAlign="center">{app?.user?._id}</Td>
+                        <Td textAlign="center">
+                          <Button
+                            as={Link}
+                            variant="link"
+                            href={`/employeeInfo/${app?.user?._id}`}
+                          >
+                            {app?.user?._id}
+                          </Button>
+                        </Td>
                         <Td textAlign="center">{app?.user?.name}</Td>
                         <Td textAlign="center">{app?.user?.email}</Td>
                         <Td textAlign="center">
