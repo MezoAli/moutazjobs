@@ -1,5 +1,7 @@
 import { connectDB } from "@/config/mongodbConfig";
+import { sendMail } from "@/lib/sendMail";
 import Application from "@/modals/applicationModel";
+import dayjs from "dayjs";
 import { NextRequest, NextResponse } from "next/server";
 connectDB();
 
@@ -7,6 +9,7 @@ export async function POST(req: NextRequest) {
   try {
     const reqBody = await req.json();
     const application = await Application.create(reqBody);
+
     return NextResponse.json(
       {
         message: "Your Application Has Been Sent Successfully",
@@ -50,9 +53,30 @@ export async function PUT(req: NextRequest) {
     const appId = searchParams.get("appId");
     const reqBody = await req.json();
 
-    await Application.findByIdAndUpdate(appId, reqBody, {
+    const application = await Application.findByIdAndUpdate(appId, reqBody, {
       new: true,
+    })
+      .populate("user")
+      .populate("job");
+
+    console.log("application : ", application);
+
+    await sendMail({
+      to: application.user.email,
+      subject: "Your Application Status Has Been Updated",
+      text: `Your Application Status Has Been Updated to ${application.status}`,
+      html: `<div>
+      <p>Your Application Status For ${
+        application.job.title
+      } Has Been Updated to ${application.status}</p>
+      <p>Company Name : ${application.job.companyName}</p>
+      <p>Your Application was Sent at ${dayjs(application.createdAt).format(
+        "DD/MM/YYYY"
+      )}</p>
+      <p>Thank You For Using MoutazJobs</p>
+      </div>`,
     });
+
     return NextResponse.json(
       { message: "Applicant Status Updated Successfully" },
       { status: 201 }

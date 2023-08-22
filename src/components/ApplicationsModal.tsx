@@ -12,6 +12,7 @@ import {
   ModalCloseButton,
   Button,
   useToast,
+  Flex,
   Table,
   Thead,
   Tbody,
@@ -64,7 +65,6 @@ const ApplicationsModal = ({
       dispatch(setLoading(false));
     }
   };
-  console.log(applications);
 
   useEffect(() => {
     getJobApplications();
@@ -154,38 +154,19 @@ const ApplicationsModal = ({
                           </Select>
                         </Td>
                         <Td textAlign="center" cursor="pointer">
-                          {/* <Flex
-                          justifyContent="center"
-                          alignItems="center"
-                          gap="25px"
-                        >
-                          <Icon
-                            as={BiEdit}
-                            boxSize={5}
-                            color="gray.400"
-                            onClick={() => {
-                              router.push(`/postedJobs/edit/${job._id}`);
-                            }}
-                          />
-                          <Icon
-                            as={BsTrash}
-                            boxSize={5}
-                            color="red.400"
-                            onClick={() => {
-                              handleDeleteJob(job._id);
-                            }}
-                          />
-                          <Icon
-                            title="applications"
-                            as={LuClipboardList}
-                            boxSize={5}
-                            color="blue.400"
-                            onClick={() => {
-                              setIsOpen(true);
-                              setSelectedJob(job);
-                            }}
-                          />
-                        </Flex> */}
+                          <Flex
+                            justifyContent="center"
+                            alignItems="center"
+                            gap="25px"
+                          >
+                            <Button
+                              as={Link}
+                              variant="link"
+                              href={`/employeeInfo/${app?.user?._id}`}
+                            >
+                              View
+                            </Button>
+                          </Flex>
                         </Td>
                       </Tr>
                     );

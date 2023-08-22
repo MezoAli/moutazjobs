@@ -1,6 +1,6 @@
 "use client";
 import { User } from "@/redux/slices/userSlice";
-import { Container, Heading, Text, Flex } from "@chakra-ui/react";
+import { Container, Heading, Text, Flex, Divider } from "@chakra-ui/react";
 
 const CompanyInfo = ({ company }: { company: User }) => {
   return (
@@ -15,12 +15,7 @@ const CompanyInfo = ({ company }: { company: User }) => {
           </Text>
           <Text>{company.name}</Text>
         </Flex>
-        <Flex justifyContent="space-between" alignItems="center">
-          <Text fontWeight="semibold" fontSize="lg">
-            About Us
-          </Text>
-          <Text>{company.about}</Text>
-        </Flex>
+
         <Flex justifyContent="space-between" alignItems="center">
           <Text fontWeight="semibold" fontSize="lg">
             Address
@@ -47,9 +42,28 @@ const CompanyInfo = ({ company }: { company: User }) => {
         </Flex>
         <Flex justifyContent="space-between" alignItems="center">
           <Text fontWeight="semibold" fontSize="lg">
+            Email Address
+          </Text>
+          <Text>{company.email}</Text>
+        </Flex>
+        <Flex justifyContent="space-between" alignItems="center">
+          <Text fontWeight="semibold" fontSize="lg">
             Visit Our Website
           </Text>
           <Text>{company.website}</Text>
+        </Flex>
+        <Flex
+          justifyContent="flex-start"
+          alignItems="flex-start"
+          width="100%"
+          direction="column"
+          gap="12px"
+        >
+          <Text fontWeight="semibold" fontSize="lg">
+            About Us
+          </Text>
+          <Divider />
+          <Text>{company.about}</Text>
         </Flex>
       </Flex>
     </Container>
