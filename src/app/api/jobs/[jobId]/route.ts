@@ -1,5 +1,7 @@
+import { connectDB } from "@/config/mongodbConfig";
 import Job from "@/modals/jobModal";
 import { NextRequest, NextResponse } from "next/server";
+connectDB();
 
 export async function GET(req: NextRequest, { params }: any) {
   try {

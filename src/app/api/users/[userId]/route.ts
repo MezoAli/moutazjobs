@@ -1,5 +1,7 @@
+import { connectDB } from "@/config/mongodbConfig";
 import User from "@/modals/userModal";
 import { NextRequest, NextResponse } from "next/server";
+connectDB();
 
 export async function GET(
   req: NextRequest,
