@@ -12,6 +12,18 @@ const getData = async (jobId: string) => {
   }
 };
 
+export async function generateMetadata({
+  params: { jobId },
+}: {
+  params: { jobId: string };
+}) {
+  const res = await axios.get(`${process.env.SITE_URL}/api/jobs/${jobId}`);
+  return {
+    title: res.data.data.title,
+    description: res.data.data.description,
+  };
+}
+
 const JobInfoPage = async ({
   params: { jobId },
 }: {

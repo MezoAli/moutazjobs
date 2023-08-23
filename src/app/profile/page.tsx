@@ -3,6 +3,12 @@ import EmployeeForm from "@/components/EmployeeForm";
 import EmployerForm from "@/components/EmployerForm";
 import { useAppSelector } from "@/redux/store/hooks";
 import { Heading, Divider, Container } from "@chakra-ui/react";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Edit Profile Page",
+  description: "Edit Profile Page",
+};
 
 const ProfilePage = () => {
   const user = useAppSelector((state) => state.user.user);

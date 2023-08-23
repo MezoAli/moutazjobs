@@ -2,7 +2,13 @@
 import AddNewJobForm from "@/components/AddNewJobForm";
 import { useAppSelector } from "@/redux/store/hooks";
 import { Container, Flex, Heading, Button, Divider } from "@chakra-ui/react";
+import { Metadata } from "next";
 import { redirect, useRouter } from "next/navigation";
+
+export const metadata: Metadata = {
+  title: "Post New Job Page",
+  description: "Post New Job Page",
+};
 
 const PostedJobsPage = () => {
   const router = useRouter();

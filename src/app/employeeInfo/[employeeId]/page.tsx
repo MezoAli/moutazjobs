@@ -8,6 +8,20 @@ const getUser = async (employeeId: string) => {
   return res.data.data;
 };
 
+export async function generateMetadata({
+  params: { employeeId },
+}: {
+  params: { employeeId: string };
+}) {
+  const res = await axios.get(
+    `${process.env.SITE_URL}/api/users/${employeeId}`
+  );
+  return {
+    title: `${res.data.data.name} Profile`,
+    description: res.data.data.carrierObjective,
+  };
+}
+
 const EmployeePage = async ({
   params: { employeeId },
 }: {

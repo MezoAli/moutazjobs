@@ -4,6 +4,7 @@ import { setLoading } from "@/redux/slices/loadingSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/store/hooks";
 import { Container, Flex, Heading, Button, Divider } from "@chakra-ui/react";
 import axios from "axios";
+import { Metadata } from "next";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -22,6 +23,11 @@ export interface Job {
   _id: string;
   companyName: string;
 }
+
+export const metadata: Metadata = {
+  title: "Posted Jobs Page",
+  description: "Posted Jobs Page",
+};
 
 const PostedJobsPage = () => {
   const router = useRouter();

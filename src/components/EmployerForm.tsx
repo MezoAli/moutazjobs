@@ -25,7 +25,6 @@ const EmployeeForm = () => {
   const [companySize, setCompanySize] = useState(user?.companySize!);
   const [website, setWebsite] = useState(user?.website!);
   const [address, setAddress] = useState(user?.address!);
-  console.log(user);
 
   const toast = useToast();
   const dispatch = useAppDispatch();
