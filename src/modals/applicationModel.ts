@@ -20,8 +20,11 @@ const applicationScehma = new mongoose.Schema(
   }
 );
 
-const Application =
-  mongoose.models.applications ||
-  mongoose.model("applications", applicationScehma);
+if (mongoose.models.applications) {
+  const applicationModel = mongoose.model("applications");
+  mongoose.deleteModel(applicationModel.modelName);
+}
+
+const Application = mongoose.model("applications", applicationScehma);
 
 export default Application;
