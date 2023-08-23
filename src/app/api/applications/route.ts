@@ -53,24 +53,28 @@ export async function PUT(req: NextRequest) {
     const appId = searchParams.get("appId");
     const reqBody = await req.json();
 
-    const application = await Application.findByIdAndUpdate(appId, reqBody, {
-      new: true,
-    })
+    const application: any = await Application.findByIdAndUpdate(
+      appId,
+      reqBody,
+      {
+        new: true,
+      }
+    )
       .populate("user")
       .populate("job");
 
     console.log("application : ", application);
 
     await sendMail({
-      to: application.user.email,
+      to: application?.user?.email,
       subject: "Your Application Status Has Been Updated",
-      text: `Your Application Status Has Been Updated to ${application.status}`,
+      text: `Your Application Status Has Been Updated to ${application?.status}`,
       html: `<div>
       <p>Your Application Status For ${
-        application.job.title
-      } Has Been Updated to ${application.status}</p>
-      <p>Company Name : ${application.job.companyName}</p>
-      <p>Your Application was Sent at ${dayjs(application.createdAt).format(
+        application?.job?.title
+      } Has Been Updated to ${application?.status}</p>
+      <p>Company Name : ${application?.job?.companyName}</p>
+      <p>Your Application was Sent at ${dayjs(application?.createdAt).format(
         "DD/MM/YYYY"
       )}</p>
       <p>Thank You For Using MoutazJobs</p>
