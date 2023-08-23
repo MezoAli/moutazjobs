@@ -22,14 +22,8 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import dayjs from "dayjs";
-import { Metadata } from "next";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-
-export const metadata: Metadata = {
-  title: "MoutazJobs | Application Page",
-  description: "applicanion page of employee",
-};
 
 const ApplicationsPage = () => {
   const user = useAppSelector((state) => state.user.user);
